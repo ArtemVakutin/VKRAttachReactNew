@@ -6,19 +6,24 @@ import Select from '@mui/material/Select';
 
 const SimpleSelector = (props) => {
 
-    const {label="", setObject = Function.prototype, items, value} = props
+    const {label = "", items, hasEmpty = false} = props
+    const items1 = [{value: "", label: "Отсутствует"}];
+    let initialItems = items;
+
+    if (hasEmpty) {
+        initialItems = [...items1, ...items]
+    }
+
 
     return (
 
         <FormControl fullWidth margin="dense">
             <InputLabel>{label}</InputLabel>
             <Select
-                value={value}
-                label={label}
-                onChange={event => setObject(event.target.value)}
                 {...props}
             >
-                {items.map(({value, label}) => (<MenuItem key={value} value={value}>{label}</MenuItem>))}
+                {initialItems.map(({value, label}) => (
+                    <MenuItem key={value} value={value}>{label}</MenuItem>))}
             </Select>
         </FormControl>
 

@@ -15,28 +15,29 @@ import {ORDER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import {AuthContext} from "../../context/Contexts";
 import SimpleSelector from "../components/SimpleSelector";
-import FormControl from "@mui/material/FormControl";
 
 function AddOrderByUserDialog({onClose, open, setRows}) {
     const {user} = useContext(AuthContext)
-    const {faculty, yearOfRecruitment, surname, name, patronymic} = user
+    const {faculty, year, surname, name, patronymic} = user
 
-    const {faculties, years, departments} = useRouteLoaderData("layout")
+    const {faculties, departments} = useRouteLoaderData("layout")
     const [department, setDepartment] = useState("")
     const [theme, setTheme] = useState("")
     const [comment, setComment] = useState("")
     const [themes, setThemes] = useState([]);
     const [error, setError] = useState("");
-
-    const facultyLabel = faculties.filter(({value}) => value === faculty).shift().label
+    let facultyLabel = "Укажите в настройках профиля факультет и год набора"
+    if (faculty && year) {
+        facultyLabel = faculties.filter(({value}) => value === faculty).shift().label
+    }
 
     useEffect(() => {
-        faculty && yearOfRecruitment && department && fetchThemes(setThemes, setError, {
-            faculty: faculty,
-            year: yearOfRecruitment,
+        faculty && year && department && fetchThemes(setThemes, setError, {
+            faculty,
+            year,
             department
         })
-    }, [department, yearOfRecruitment, faculty])
+    }, [department, year, faculty])
 
     const themesMap = themes.map((theme) => {
         return {
@@ -59,7 +60,7 @@ function AddOrderByUserDialog({onClose, open, setRows}) {
 
 
     const sendOrder = () => {
-        const data = {faculty, yearOfRecruitment, department, userId: user.id, themeId: theme, comment}
+        const data = {faculty, year, department, userId: user.id, themeId: theme, comment}
         axios.put(ORDER_URL, data)
             .then(response => {
                 cleanData()
@@ -123,7 +124,7 @@ function AddOrderByUserDialog({onClose, open, setRows}) {
                         fullWidth margin="dense"
                         disabled
                         label="Год набора"
-                        defaultValue={yearOfRecruitment}
+                        defaultValue={year}
                         onChange={()=> {}}
                     />
 
@@ -140,14 +141,14 @@ function AddOrderByUserDialog({onClose, open, setRows}) {
                     {/*Выбор кафедры на которой писать тему*/}
                     <SimpleSelector
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event => setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>
 
                     {/*Выбор темы*/}
                     {(themes.length > 0) && <SimpleSelector
                         value={theme}
-                        setObject={setTheme}
+                        onChange={event => setTheme(event.target.value)}
                         items={themesMap}
                         label="Название темы"/>}
 
@@ -160,8 +161,6 @@ function AddOrderByUserDialog({onClose, open, setRows}) {
                         value={comment}
                         onChange={event => setComment(event.target.value)}
                     />
-
-
 
                     {error && <Alert severity="error" fullWidth>{error}</Alert>}
                 </Box>

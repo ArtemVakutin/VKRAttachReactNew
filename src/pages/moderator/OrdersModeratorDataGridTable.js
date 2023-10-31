@@ -8,7 +8,6 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import {
-    DataGrid,
     GridActionsCellItem,
     GridRowEditStopReasons,
     GridRowModes,
@@ -20,10 +19,9 @@ import {
 } from '@mui/x-data-grid';
 import Container from "@mui/material/Container";
 import axios from "axios";
-import {GET_THEMES_URL, ORDER_URL, THEME_URL} from "../../constants/LinkConstants";
+import {ORDER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
-import DeleteDialog from "../components/DeleteDialog";
 import OrdersStyledDataGrid from "../admin/OrdersStyledDataGrid";
 import ChangeThemeDialog from "../components/ChangeThemeDialog";
 

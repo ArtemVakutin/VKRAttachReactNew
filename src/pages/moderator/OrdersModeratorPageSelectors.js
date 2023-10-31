@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import {SelectorInOneRowWithEmpty} from "../components/SelectorInOneRow";
 import {useRouteLoaderData} from "react-router-dom";
 import {REQUEST_STATUS} from "../../constants/SimpleConstants";
-import {fetchLecturers, fetchOrders, fetchThemes} from "../../constants/Methods";
+import {fetchLecturers, fetchOrders} from "../../constants/Methods";
 import Alert from "@mui/material/Alert";
 import OrdersModeratorDataGrid from "./OrdersModeratorDataGrid";
+import SimpleSelector from "../components/SimpleSelector";
 
 
 export const OrdersModeratorPageSelectors = ({departmentInit = ""}) => {
@@ -37,7 +37,7 @@ export const OrdersModeratorPageSelectors = ({departmentInit = ""}) => {
 
     useEffect(() => {
         fetchOrders(setOrders, setError, {department, faculty, year, status});
-        fetchLecturers(mapLecturers, Function.prototype, departmentInit);
+        fetchLecturers(mapLecturers, Function.prototype, department);
     }, [faculty, year, department, status])
 
 
@@ -56,19 +56,22 @@ export const OrdersModeratorPageSelectors = ({departmentInit = ""}) => {
                     gap: '10px'
                 }}>
 
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={faculty}
-                        setObject={setFaculty}
+                        onChange={event=>setFaculty(event.target.value)}
                         items={faculties}
                         label="Специальность (направление подготовки)"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={year}
-                        setObject={setYear}
+                        onChange={event=>setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={status}
-                        setObject={setStatus}
+                        onChange={event=>setStatus(event.target.value)}
                         items={statuses}
                         label="Статус"/>
                     {error && <Alert severity="error" fullWidth>{error}</Alert>}

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import {SelectorInOneRowWithEmpty} from "../components/SelectorInOneRow";
 import {useRouteLoaderData} from "react-router-dom";
 import {fetchThemes} from "../../constants/Methods";
 import Alert from "@mui/material/Alert";
 import ThemesDataGrid from "./ThemesDataGrid";
+import SimpleSelector from "../components/SimpleSelector";
 
 
 export const ThemesPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
@@ -35,24 +35,26 @@ export const ThemesPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     width: '100',
-                    // backgroundColor: 'primary.dark',
                     justifyContent: 'center',
                     alignSelf: 'center',
                     gap: '10px'
                 }}>
-                    {role === "ADMIN" && <SelectorInOneRowWithEmpty
+                    {role === "ADMIN" && <SimpleSelector
+                        hasEmpty={true}
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event=>setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>}
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={faculty}
-                        setObject={setFaculty}
+                        onChange={event=>setFaculty(event.target.value)}
                         items={faculties}
                         label="Специальность (направление подготовки)"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={year}
-                        setObject={setYear}
+                        onChange={event=>setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
                     {error && <Alert severity="error" fullWidth>{error}</Alert>}

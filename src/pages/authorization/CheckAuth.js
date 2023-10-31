@@ -5,8 +5,7 @@ import {AuthContext} from "../../context/Contexts";
 export const CheckAuth = () => {
     // const navigate = useNavigate();
     const {user} = useContext(AuthContext);
-    console.info("------------")
-    console.info(user)
+
     if (user === null) {
         return <Navigate to="/auth"/>
     } else if (user.role === "USER") {

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import SelectorInOneRow, {SelectorInOneRowWithEmpty} from "../components/SelectorInOneRow";
 import {useRouteLoaderData} from "react-router-dom";
 import {ROLES} from "../../constants/SimpleConstants";
 import axios from "axios";
 import {createFilters} from "../../constants/Methods";
 import {GET_USERS_URL} from "../../constants/LinkConstants";
 import UsersDataGrid from "./UsersDataGrid";
+import SimpleSelector from "../components/SimpleSelector";
 
 
 export const UsersPage = () => {
@@ -30,7 +30,7 @@ export const UsersPage = () => {
 
         role && (filter = createFilters(filter, "role", role));
         faculty && (filter = createFilters(filter, "faculty", faculty));
-        year && (filter = createFilters(filter, "yearOfRecruitment", year));
+        year && (filter = createFilters(filter, "year", year));
 
         console.log(filter + "   в итоге фильтр")
 
@@ -77,19 +77,21 @@ export const UsersPage = () => {
                     alignSelf: 'center',
                     gap: '10px'
                 }}>
-                    <SelectorInOneRow
+                    <SimpleSelector
                         value={role}
-                        setObject={setRole1}
+                        onChange={event=>setRole(event.target.value)}
                         items={roles}
                         label="Права доступа"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={faculty}
-                        setObject={setFaculty}
+                        onChange={event=>setFaculty(event.target.value)}
                         items={faculties}
                         label="Специальность (направление подготовки)"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={year}
-                        setObject={setYear}
+                        onChange={event=>setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
                 </Box>

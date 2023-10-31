@@ -21,7 +21,8 @@ export const Registration = () => {
     const navigate = useNavigate();
     const [error, setError] = useState("");
 
-    const {faculties, years} = useRouteLoaderData("layout")
+    const {faculties, years, ranks, rankTypes, userPositions} = useRouteLoaderData("layout")
+
     const [login, setLogin] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -32,7 +33,10 @@ export const Registration = () => {
     const [telephone, setTelephone] = useState("");
     const [faculty, setFaculty] = useState("");
     const [group, setGroup] = useState("");
-    const [yearOfRecruitment, setYearOfRecruitment] = useState("");
+    const [rank, setRank] = useState("")
+    const [rankType, setRankType] = useState("")
+    const [position, setPosition] = useState("")
+    const [year, setYear] = useState("");
 
     //обнуляем с переадресацией на sign in
     const regComplete = () => {
@@ -46,7 +50,10 @@ export const Registration = () => {
         setTelephone("");
         setFaculty("");
         setGroup("");
-        setYearOfRecruitment("");
+        setYear("");
+        setRank("");
+        setRankType("");
+        setPosition("");
         setError("");
         navigate("/auth/regcomplete")
     }
@@ -64,7 +71,10 @@ export const Registration = () => {
             telephone,
             faculty,
             group,
-            yearOfRecruitment
+            year,
+            rank,
+            rankType,
+            position
         }
         await axios.put(LOGIN_REGISTRATION_URL, data)
             .then(res => regComplete())
@@ -76,7 +86,7 @@ export const Registration = () => {
                     setError(err.response.data.message)
                 } else if (err.request) {
                     console.log((err.response.data))
-                    setError("сервер недоступен" + err.response.data)
+                    setError("Сервер недоступен (возможно отключен доступ в сеть)" + err.response.data)
                 } else {
                     console.log(err)
                     setError("Что-то пошло не так" + err.response)
@@ -96,7 +106,6 @@ export const Registration = () => {
                 }}
             >
                 {/*Иконка*/}
-
                 <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
                     <PersonAddAlt1Icon/>
                 </Avatar>
@@ -110,8 +119,7 @@ export const Registration = () => {
                 <TextField margin="dense" fullWidth autoFocus
                            label="Логин*"
                            onChange={event => setLogin(event.target.value)}
-                           value={login}
-                />
+                           value={login}/>
 
                 {/*Форма пароля*/}
                 <PasswordForm
@@ -168,16 +176,34 @@ export const Registration = () => {
                 {/*специальность*/}
                 <SimpleSelector
                     value={faculty}
-                    setObject={setFaculty}
+                    onChange={event => setFaculty(event.target.value)}
                     items={faculties}
                     label="Специальность"/>
 
                 {/*год набора*/}
                 <SimpleSelector
-                    value={yearOfRecruitment}
-                    setObject={setYearOfRecruitment}
+                    value={year}
+                    onChange={event => setYear(event.target.value)}
                     items={years}
                     label="Год набора"/>
+
+                <SimpleSelector
+                    value={rank}
+                    onChange={event => setRank(event.target.value)}
+                    items={ranks}
+                    label="Звание"/>
+
+                <SimpleSelector
+                    value={rankType}
+                    onChange={event => setRankType(event.target.value)}
+                    items={rankTypes}
+                    label="Вид звания"/>
+
+                <SimpleSelector
+                    value={position}
+                    onChange={event => setPosition(event.target.value)}
+                    items={userPositions}
+                    label="Должность (для заочного обучения - слушатель, для очного - курсант и др."/>
 
                 <Button
                     fullWidth

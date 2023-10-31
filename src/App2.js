@@ -15,7 +15,25 @@ export const App2 = () => {
 
     const fetchDomainData = () => {
         axios.get(`${DOMAIN_URL}`)
-            .then(res => setDomain(res.data))
+            .then(res => {
+                const data = {
+                    departments: res.data.DEPARTMENT,
+                    faculties: res.data.FACULTY,
+                    years: res.data.YEAR,
+                    ranks: res.data.RANK,
+                    lecturerRanks: res.data.LECTURER_RANK,
+                    academicTitles: res.data.ACADEMIC_TITLE,
+                    academicDegrees: res.data.ACADEMIC_DEGREE,
+                    rankTypes: res.data.RANK_TYPE,
+                    lecturerPositions:res.data.LECTURER_POSITION,
+                    userPositions:res.data.USER_POSITION,
+                    user: null,
+                    globalError: null,
+                }
+
+
+                setDomain(res.data)
+            })
             .catch(error => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
@@ -66,10 +84,8 @@ export const App2 = () => {
     }
 
     useEffect(() => fetchDomainData(), []);
-    console.info(domain);
 
     useEffect(() => fetchUser(), []);
-    console.info(domain);
 
     return (
         <DomainContext.Provider value={{departments, faculties, years, ranks, academictitles,

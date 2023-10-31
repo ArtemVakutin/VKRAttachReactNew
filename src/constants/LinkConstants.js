@@ -22,6 +22,7 @@ export const GET_ORDERS_URL = process.env.REACT_APP_GET_ORDERS_URL;
 export const GET_ORDERS_FOR_USER = process.env.REACT_APP_GET_ORDERS_FOR_USER;
 
 export const UPLOAD_URL = process.env.REACT_APP_UPLOAD_URL
+export const DOWNLOAD_URL = process.env.REACT_APP_DOWNLOAD_URL
 
 
 

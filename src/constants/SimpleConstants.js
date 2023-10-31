@@ -7,10 +7,6 @@ export const REQUEST_STATUS = [
         label: "На рассмотрении",
     },
     {
-        value:"NEED_CHANGES",
-        label: "Нужны изменения",
-    },
-    {
         value:"REFUSED",
         label: "Отказано",
     },

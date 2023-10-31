@@ -19,9 +19,9 @@ const UserPatchForm = () => {
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
-    const {user} = useContext(AuthContext);
+    const {user, fetchUser} = useContext(AuthContext);
 
-    const {faculties, years} = useRouteLoaderData("layout")
+    const {faculties, years, ranks, rankTypes, userPositions} = useRouteLoaderData("layout")
 
     const [id, setId] = useState(user.id);
     const [login, setLogin] = useState(user.login);
@@ -32,7 +32,10 @@ const UserPatchForm = () => {
     const [telephone, setTelephone] = useState(user.telephone);
     const [faculty, setFaculty] = useState(user.faculty);
     const [group, setGroup] = useState(user.group);
-    const [yearOfRecruitment, setYearOfRecruitment] = useState(user.yearOfRecruitment);
+    const [year, setYear] = useState(user.yearOfRecruitment);
+    const [rank, setRank] = useState(user.rank)
+    const [rankType, setRankType] = useState(user.rankType)
+    const [position, setPosition] = useState(user.position)
 
     //Регистрация
     const sendPatchRequest = async () => {
@@ -46,12 +49,16 @@ const UserPatchForm = () => {
             telephone,
             faculty,
             group,
-            yearOfRecruitment
+            year,
+            rank,
+            rankType,
+            position
         }
         await axios.patch(LOGIN_REGISTRATION_URL, data)
             .then(res => {
                 setSuccess(true)
                 setError("")
+                fetchUser()
             })
             .catch(err => {
                 if (err.response) {
@@ -146,16 +153,34 @@ const UserPatchForm = () => {
                 {/*специальность*/}
                 <SimpleSelector
                     value={faculty}
-                    setObject={setFaculty}
+                    onChange={event => setFaculty(event.target.value)}
                     items={faculties}
                     label="Специальность"/>
 
                 {/*год набора*/}
                 <SimpleSelector
-                    value={yearOfRecruitment}
-                    setObject={setYearOfRecruitment}
+                    value={year}
+                    onChange={event => setYear(event.target.value)}
                     items={years}
                     label="Год набора"/>
+
+                <SimpleSelector
+                    value={rank}
+                    onChange={event => setRank(event.target.value)}
+                    items={ranks}
+                    label="Звание"/>
+
+                <SimpleSelector
+                    value={rankType}
+                    onChange={event => setRankType(event.target.value)}
+                    items={rankTypes}
+                    label="Вид звания"/>
+
+                <SimpleSelector
+                    value={position}
+                    onChange={event => setPosition(event.target.value)}
+                    items={userPositions}
+                    label="Должность (для заочного обучения - слушатель, для очного - курсант и др."/>
 
                 <Button
                     fullWidth

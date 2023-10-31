@@ -19,13 +19,12 @@ import {SIGN_IN_CONFIG} from "../../constants/SimpleConstants";
 import PasswordForm from "../components/PasswordForm";
 import {AuthContext} from "../../context/Contexts";
 
-
 const defaultTheme = createTheme();
 
 
 const SignIn = ({registrationComplete = false}) => {
     const navigate = useNavigate();
-    const [userName, setUserName] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [regComplete, setRegComplete] = useState(registrationComplete)
@@ -33,18 +32,20 @@ const SignIn = ({registrationComplete = false}) => {
 
 
     const sendSignIn = async () => {
-        if (userName === "" || password === "") {
+
+        if (username === "" || password === "") {
             setError("Логин и пароль не должны быть пустыми");
             return;
         }
-        const data = {username: userName, password};
+        const data = {username, password};
         let done = false
         await axios.post(LOGIN_PROCESSING_URL, qs.stringify(data), SIGN_IN_CONFIG)
             .then(async response => {
                 if (!response.request.responseURL.includes("error")) {
                     setError("");
-                    setUserName("");
+                    setUsername("");
                     setPassword("")
+                    console.log("1111111111111111111111111111111111111111111111111111111111111111")
                     // done = true
                     await fetchUser()
                     navigate("/")
@@ -58,6 +59,40 @@ const SignIn = ({registrationComplete = false}) => {
                 setError("Что-то пошло не так")
             });
     }
+
+    // const sendSignIn = async () => {
+    //     if (username === "" || password === "") {
+    //         setError("Логин и пароль не должны быть пустыми");
+    //         return;
+    //     }
+    //     // const data = {username: userName, password};
+    //     let done = false
+    //     let config = {
+    //         headers: {
+    //             Authorization: `Basic ${btoa(username + ":" + password)}`
+    //         }
+    //     }
+    //
+    //         axios.post(LOGIN_PROCESSING_URL, {}, config).then(res => console.log(res))
+        // await axios.post(LOGIN_PROCESSING_URL, qs.stringify(data), SIGN_IN_CONFIG)
+        //     .then(async response => {
+        //         if (!response.request.responseURL.includes("error")) {
+        //             setError("");
+        //             setUserName("");
+        //             setPassword("")
+        //             // done = true
+        //             await fetchUser()
+        //             navigate("/")
+        //         } else {
+        //             setRegComplete(false)
+        //             setError("Логин или пароль некорректны");
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //         setError("Что-то пошло не так")
+        //     });
+    // }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -85,8 +120,8 @@ const SignIn = ({registrationComplete = false}) => {
                         fullWidth
                         label="Логин"
                         autoFocus
-                        onChange={event => setUserName(event.target.value)}
-                        value={userName}
+                        onChange={event => setUsername(event.target.value)}
+                        value={username}
                     />
 
                     {/*Форма пароля*/}

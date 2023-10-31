@@ -6,7 +6,7 @@ export const ThemesModeratorPage = () => {
 
     const {user} = useContext(AuthContext)
 
-    return <ThemesPage departmentInit={user.login} role={"MODERATOR"}/>
+    return <ThemesPage departmentInit={user.department} role={"MODERATOR"}/>
 }
 
 export default ThemesModeratorPage;

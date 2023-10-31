@@ -20,7 +20,7 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
 
     const {faculties, years, departments} = useRouteLoaderData("layout")
     const [faculty, setFaculty] = useState("");
-    const [yearOfRecruitment, setYearOfRecruitment] = useState("");
+    const [year, setYear] = useState("");
     const [department, setDepartment] = useState("")
     const [user, setUser] = useState("");
     const [theme, setTheme] = useState("")
@@ -39,16 +39,16 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
     }, [departmentInit])
 
     useEffect(() => {
-        faculty && yearOfRecruitment && department && fetchThemes(setThemes, setError, {
+        faculty && year && department && fetchThemes(setThemes, setError, {
             faculty,
-            year: yearOfRecruitment,
+            year,
             department
         })
-    }, [department, yearOfRecruitment, faculty])
+    }, [department, year, faculty])
 
     useEffect(() => {
-        faculty && yearOfRecruitment && fetchSimpleUsers(setUsers, setError, {faculty, yearOfRecruitment})
-    }, [faculty, yearOfRecruitment])
+        faculty && year && fetchSimpleUsers(setUsers, setError, {faculty, year})
+    }, [faculty, year])
 
     // Преобразовываем юзера для селекта
     const usersMap = users.sort((a, b) => {
@@ -89,7 +89,7 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
         setTheme("")
         setRequestStatus("UNDER_CONSIDERATION")
         setComment("")
-        setYearOfRecruitment("")
+        setYear("")
         setUsers([])
         setThemes([])
         setLecturers([])
@@ -97,7 +97,7 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
 
 
     const sendOrder = () => {
-        const data = {faculty, yearOfRecruitment, department, userId: user, themeId: theme, requestStatus, comment}
+        const data = {faculty, year, department, userId: user, themeId: theme, requestStatus, comment}
         axios.put(ORDER_URL, data)
             .then(response => {
                 cleanData()
@@ -155,8 +155,8 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
 
                     {/*год набора*/}
                     <SimpleSelector
-                        value={yearOfRecruitment}
-                        setObject={setYearOfRecruitment}
+                        value={year}
+                        setObject={setYear}
                         items={years}
                         label="Год набора"/>
 

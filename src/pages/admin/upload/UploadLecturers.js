@@ -6,8 +6,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from "@mui/material/Box";
 import UploadDataDialog from "./UploadDataDialog";
 import {useRouteLoaderData} from "react-router-dom";
-import {SelectorInOneRowWithEmpty} from "../../components/SelectorInOneRow";
 import Alert from "@mui/material/Alert";
+import SimpleSelector from "../../components/SimpleSelector";
 
 
 const UploadLecturers = ({departmentInitial = "", role = "ADMIN"}) => {
@@ -55,9 +55,10 @@ const UploadLecturers = ({departmentInitial = "", role = "ADMIN"}) => {
                     borderRadius: 2,
                     p: 2
                 }}>
-                    {role === "ADMIN" && <SelectorInOneRowWithEmpty
+                    {role === "ADMIN" && <SimpleSelector
+                        hasEmpty={true}
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event=>setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>}
 

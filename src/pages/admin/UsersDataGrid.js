@@ -6,7 +6,7 @@ import {ROLES} from "../../constants/SimpleConstants";
 
 
 export const UsersDataGrid = (props) => {
-    const {faculties, years} = useRouteLoaderData("layout")
+    const {faculties, years, ranks, rankTypes, userPositions} = useRouteLoaderData("layout")
 
     const columns = [
         {
@@ -83,7 +83,37 @@ export const UsersDataGrid = (props) => {
             editable: true
         },
         {
-            field: 'yearOfRecruitment',
+            field: 'rank',
+            headerName: 'Звание',
+            flex: 100,
+            align: 'left',
+            headerAlign: 'left',
+            type: "singleSelect",
+            valueOptions: ranks,
+            editable: true
+        },
+        {
+            field: 'rankType',
+            headerName: 'Вид звания',
+            flex: 100,
+            align: 'left',
+            headerAlign: 'left',
+            type: "singleSelect",
+            valueOptions: rankTypes,
+            editable: true
+        },
+        {
+            field: 'position',
+            headerName: 'Вид звания',
+            flex: 100,
+            align: 'left',
+            headerAlign: 'left',
+            type: "singleSelect",
+            valueOptions: userPositions,
+            editable: true
+        },
+        {
+            field: 'year',
             headerName: 'Год набора',
             width: 100,
             align: 'left',
@@ -122,6 +152,9 @@ export const UsersDataGrid = (props) => {
             patronymic: '',
             email: '',
             faculty: '',
+            rank: '',
+            rankType: '',
+            position: '',
             yearOfRecruitment: '',
             role: 'USER',
             password: '',

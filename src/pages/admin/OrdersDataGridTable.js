@@ -3,24 +3,17 @@ import {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import {
-    DataGrid,
     GridActionsCellItem,
-    GridRowEditStopReasons,
-    GridRowModes,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
-    GridToolbarExport,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import Container from "@mui/material/Container";
 import axios from "axios";
-import {GET_USER_URL, LOGIN_REGISTRATION_URL, ORDER_URL} from "../../constants/LinkConstants";
+import {ORDER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";

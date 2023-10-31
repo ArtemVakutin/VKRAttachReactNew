@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import SelectorInOneRow from "../components/SelectorInOneRow";
 import {useRouteLoaderData} from "react-router-dom";
-import axios from "axios";
-import {GET_LECTURERS_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import LecturersDataGrid from "./LecturersDataGrid";
 import {fetchLecturers} from "../../constants/Methods";
+import SimpleSelector from "../components/SimpleSelector";
 
 
 const LecturersPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
@@ -41,9 +39,9 @@ const LecturersPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
                     alignSelf: 'center',
                     gap: '10px'
                 }}>
-                    {role === "ADMIN" && <SelectorInOneRow
+                    {role === "ADMIN" && <SimpleSelector
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event => setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>}
                     {error && <Alert severity="error" fullWidth>{error}</Alert>}

@@ -1,6 +1,6 @@
-import {sfEqual} from "spring-filter-query-builder";
 import axios from "axios";
 import {GET_LECTURERS_URL, GET_ORDERS_URL, GET_THEMES_URL, GET_USER_URL, GET_USERS_URL} from "./LinkConstants";
+import {sfAnd, sfEqual} from "spring-filter-query-builder";
 
 
 export const fetchSimpleUserById = (setUser, setError, id) => {
@@ -31,12 +31,12 @@ export const fetchSimpleUserById = (setUser, setError, id) => {
     })
 }
 
-export const fetchSimpleUsers = (setUsers, setError=()=>{}, {role = "USER", faculty, yearOfRecruitment}) => {
+export const fetchSimpleUsers = (setUsers, setError=()=>{}, {role = "USER", faculty, year}) => {
     let filter = null;
-    console.log(role + faculty + yearOfRecruitment)
+    console.log(role + faculty + year)
     role && (filter = createFilters(filter, "role", role));
     faculty && (filter = createFilters(filter, "faculty", faculty));
-    yearOfRecruitment && (filter = createFilters(filter, "yearOfRecruitment", yearOfRecruitment));
+    year && (filter = createFilters(filter, "year", year));
 
     const config = {
         params: {
@@ -163,7 +163,7 @@ export const fetchOrders = (setOrders, setError, {department = null, faculty = n
     status && (filter = createFilters(filter, "orderStatus", status));
     faculty && (filter = createFilters(filter, "user.faculty", faculty));
     department && (filter = createFilters(filter, "theme.department", department));
-    year && (filter = createFilters(filter, "user.yearOfRecruitment", year));
+    year && (filter = createFilters(filter, "user.year", year));
     themeId && (filter = createFilters(filter, "theme.themeId", themeId))
 
     console.log(filter + "   в итоге фильтр")
@@ -199,13 +199,16 @@ export const fetchOrders = (setOrders, setError, {department = null, faculty = n
 
 
 export const createFilters = (filter, selector, value) => {
+
+    // const filter1 = sfAnd([sfEqual('status', 'active'), sfEqual('status', 'active')]);
+    // console.log(filter1.toString());
     console.log("Метод createFilters вызван")
     console.log(filter + "   " + selector + "   " +value)
 
     if (filter == null) {
         filter = sfEqual(selector, value).toString();
     } else if (filter != null) {
-        filter = filter + " AND " + sfEqual(selector, value).toString();
+        filter = filter + " and " + sfEqual(selector, value).toString();
     }
 
     console.log(filter + "   после метода")

@@ -6,7 +6,7 @@ import {AuthContext} from "../../context/Contexts";
 
 
 export const LecturersDataGrid = (props) => {
-    const {departments, ranks, academicDegrees, academicTitles} = useRouteLoaderData("layout")
+    const {departments, lecturerRanks, academicDegrees, academicTitles, rankTypes, lecturerPositions} = useRouteLoaderData("layout")
 
     const {user} = useContext(AuthContext)
 
@@ -95,26 +95,46 @@ export const LecturersDataGrid = (props) => {
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
-            valueOptions: ranks,
+            valueOptions: lecturerRanks,
+            editable: true
+        },
+        {
+            field: 'rankType',
+            headerName: 'Вид звания',
+            flex: 150,
+            align: 'left',
+            headerAlign: 'left',
+            type: "singleSelect",
+            valueOptions: rankTypes,
+            editable: true
+        },
+        {
+            field: 'position',
+            headerName: 'Должность',
+            flex: 150,
+            align: 'left',
+            headerAlign: 'left',
+            type: "singleSelect",
+            valueOptions: lecturerPositions,
             editable: true
         },
 
     ]
 
-    const getId = () => randomId();
-
     const getNewRow = () => {
         return {
             id: randomId(),
-            surname: 'adafdafasdfa',
+            surname: '',
             name: '',
             patronymic: '',
             email: '',
             telephone: '',
-            department: user.role==="ADMIN"? "": user.login,
-            academicDegree: 'NONE',
-            academicTitle: 'NONE',
-            rank: 'NONE',
+            department: user.role==="ADMIN"? "": user.department,
+            academicDegree: '',
+            academicTitle: '',
+            rank: '',
+            rankType: '',
+            position: '',
             isNew: true
         }
     }

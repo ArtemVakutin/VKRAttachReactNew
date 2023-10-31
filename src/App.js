@@ -1,4 +1,4 @@
-import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom';
+import {createBrowserRouter, createHashRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom';
 import {Layout} from "./pages/layout/Layout";
 import {AuthProvider} from "./hoc/AuthProvider";
 import {Registration} from "./pages/authorization/Registration";
@@ -20,6 +20,7 @@ import {ThemesModeratorPage} from "./pages/moderator/ThemesModeratorPage";
 import OrdersModeratorPage from "./pages/moderator/OrdersModeratorPage";
 import UserOrdersPage from "./pages/user/UserOrdersPage";
 import UploadPage from "./pages/admin/UploadPage";
+import DownloadPage from "./pages/admin/DownloadPage";
 
 axios.defaults.withCredentials = true;
 
@@ -54,7 +55,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             <Route path="themes" element={<ThemesPage/>}/>
             <Route path="lecturers" element={<LecturersPage/>}/>
             <Route path="addfiles" element={<UploadPage/>}/>
-            <Route path="getfiles" element={<p>Our team</p>}/>
+            <Route path="getfiles" element={<DownloadPage/>}/>
         </Route>
 
     </Route>
@@ -62,10 +63,8 @@ const router = createBrowserRouter(createRoutesFromElements(
 
 export const App = () => {
     return (
-        // <Route>
         <AuthProvider>
             <RouterProvider router={router}/>
         </AuthProvider>
-        // </Route>
     );
 }

@@ -6,10 +6,12 @@ export const DomainContext = createContext({
     faculties: [],
     years: [],
     ranks:[],
-    academictitles:[],
-    academicdegrees:[],
-    ranktypes:[],
+    lecturerRanks:[],
+    academicTitles:[],
+    academicDegrees:[],
+    rankTypes:[],
+    lecturerPositions:[],
+    userPositions:[],
     user: null,
     globalError: null,
-    getDomainData: ()=>{}
-})
+    })

@@ -6,7 +6,7 @@ export const OrdersModeratorPage = () => {
 
     const {user} = useContext(AuthContext)
 
-    return <OrdersModeratorPageSelectors departmentInit={user.login} role={"MODERATOR"}/>
+    return <OrdersModeratorPageSelectors departmentInit={user.department} role={"MODERATOR"}/>
 }
 
 export default OrdersModeratorPage;

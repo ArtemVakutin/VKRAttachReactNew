@@ -20,7 +20,7 @@ import {
 } from '@mui/x-data-grid';
 import Container from "@mui/material/Container";
 import axios from "axios";
-import {GET_THEMES_URL, LECTURER_URL, THEME_URL} from "../../constants/LinkConstants";
+import {LECTURER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";
@@ -252,7 +252,7 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
     const columns = [...rowIndexColumn, ...dataGridColumns, ...actionsColumn]
 
     return (
-        <Container>
+        <Container maxWidth="false">
             <Box mt={3}
                  sx={{
                      // minHeight: 500,

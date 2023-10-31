@@ -6,8 +6,6 @@ import UploadLecturers from "./upload/UploadLecturers";
 
 
 const UploadPage = () => {
-
-
     return (
         <>
             <Container maxWidth={"md"}>
@@ -17,8 +15,6 @@ const UploadPage = () => {
             </Container>
         </>
     )
-
 }
-
 
 export default UploadPage

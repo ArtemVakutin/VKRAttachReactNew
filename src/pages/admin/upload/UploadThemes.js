@@ -6,12 +6,12 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from "@mui/material/Box";
 import UploadDataDialog from "./UploadDataDialog";
 import {useRouteLoaderData} from "react-router-dom";
-import {SelectorInOneRowWithEmpty} from "../../components/SelectorInOneRow";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import {GET_THEMES_URL} from "../../../constants/LinkConstants";
 import DeleteSomethingDialog from "../../components/DeleteSomethingDialog";
 import ThemesNotDeletedDialog from "./ThemesNonDeletedDialog";
+import SimpleSelector from "../../components/SimpleSelector";
 
 
 const UploadThemes = ({departmentInitial = "", role = "ADMIN"}) => {
@@ -131,19 +131,22 @@ const UploadThemes = ({departmentInitial = "", role = "ADMIN"}) => {
                     borderRadius: 2,
                     p: 2
                 }}>
-                    {role === "ADMIN" && <SelectorInOneRowWithEmpty
+                    {role === "ADMIN" && <SimpleSelector
+                        hasEmpty={true}
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event=>setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>}
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={faculty}
-                        setObject={setFaculty}
+                        onChange={event=>setFaculty(event.target.value)}
                         items={faculties}
                         label="Специальность (направление подготовки)"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={year}
-                        setObject={setYear}
+                        onChange={event=>setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
 

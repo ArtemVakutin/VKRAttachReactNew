@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import {SelectorInOneRowWithEmpty} from "../components/SelectorInOneRow";
 import {useRouteLoaderData} from "react-router-dom";
 import {REQUEST_STATUS} from "../../constants/SimpleConstants";
 import axios from "axios";
@@ -9,6 +8,7 @@ import {createFilters} from "../../constants/Methods";
 import {GET_ORDERS_URL} from "../../constants/LinkConstants";
 import OrdersDataGrid from "./OrdersDataGrid";
 import Alert from "@mui/material/Alert";
+import SimpleSelector from "../components/SimpleSelector";
 
 
 export const OrdersPage = () => {
@@ -33,8 +33,8 @@ export const OrdersPage = () => {
 
         status && (filter = createFilters(filter, "orderStatus", status));
         faculty && (filter = createFilters(filter, "user.faculty", faculty));
-        department && (filter = createFilters(filter, "theme.themeDepartment", department));
-        year && (filter = createFilters(filter, "user.yearOfRecruitment", year));
+        department && (filter = createFilters(filter, "theme.department", department));
+        year && (filter = createFilters(filter, "user.year", year));
 
         console.log(filter + "   в итоге фильтр")
 
@@ -80,24 +80,28 @@ export const OrdersPage = () => {
                     alignSelf: 'center',
                     gap: '10px'
                 }}>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={status}
-                        setObject={setStatus}
+                        onChange={event=>setStatus(event.target.value)}
                         items={statuses}
                         label="Статус"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event=>setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={faculty}
-                        setObject={setFaculty}
+                        onChange={event=>setFaculty(event.target.value)}
                         items={faculties}
                         label="Специальность (направление подготовки)"/>
-                    <SelectorInOneRowWithEmpty
+                    <SimpleSelector
+                        hasEmpty={true}
                         value={year}
-                        setObject={setYear}
+                        onChange={event=>setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
                     {error && <Alert severity="error" fullWidth>{error}</Alert>}
