@@ -7,6 +7,7 @@ import {AuthContext} from "../../context/Contexts";
 
 export const ThemesDataGrid = (props) => {
     const {user} = useContext(AuthContext)
+    const {departmentInit, yearInit, facultyInit} = props;
 
     const {faculties, years, departments} = useRouteLoaderData("layout")
 
@@ -14,21 +15,33 @@ export const ThemesDataGrid = (props) => {
         {
             field: 'id',
             headerName: 'ID',
-            width: 60,
+            width: 50,
             editable: false
         },
         {
             field: 'themeName',
             headerName: 'Название темы',
-            flex: 200,
+            flex: 450,
+            minWidth: 450,
             align: 'left',
             headerAlign: 'left',
             editable: true,
         },
         {
+            field: 'busy',
+            headerName: 'Занято/свободно',
+            flex: 60,
+            minWidth: 60,
+            align: 'left',
+            headerAlign: 'left',
+            valueFormatter: ({ value }) => value ? "ЗАНЯТО" : "",
+            editable: false
+        },
+        {
             field: 'department',
             headerName: 'Кафедра',
-            flex: 150,
+            flex: 100,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -39,21 +52,22 @@ export const ThemesDataGrid = (props) => {
             field: 'faculty',
             headerName: 'Факультет',
             flex: 180,
+            minWidth: 180,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
             valueOptions: faculties,
-            editable: true
+            editable: user.role === "ADMIN"
         },
         {
-            field: 'yearOfRecruitment',
+            field: 'year',
             headerName: 'Год набора',
-            width: 100,
+            width: 70,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
             valueOptions: years,
-            editable: true
+            editable: user.role === "ADMIN"
         },
     ]
 
@@ -63,9 +77,9 @@ export const ThemesDataGrid = (props) => {
         return {
             id: randomId(),
             themeName: '',
-            faculty: '',
-            yearOfRecruitment: '',
-            department: user.role === "ADMIN" ? "": user.login,
+            faculty: facultyInit,
+            year: yearInit,
+            department: user.role === "ADMIN" ? "": user.department,
             isNew: true
         }
     }

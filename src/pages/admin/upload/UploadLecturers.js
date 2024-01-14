@@ -66,7 +66,7 @@ const UploadLecturers = ({departmentInitial = "", role = "ADMIN"}) => {
                         <AddIcon/>Добавить преподавателей из файла Excel
                     </Button>
 
-                    {error && <Alert severity="error" fullwidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
 
                     <UploadDataDialog params={params} onClose={() => setOpenDialog(false)} open={openDialog}
                                       uploadType="lecturers"/>

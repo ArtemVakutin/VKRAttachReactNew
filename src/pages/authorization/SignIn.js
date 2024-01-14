@@ -18,18 +18,24 @@ import qs from "qs"
 import {SIGN_IN_CONFIG} from "../../constants/SimpleConstants";
 import PasswordForm from "../components/PasswordForm";
 import {AuthContext} from "../../context/Contexts";
+import {addCsrfToken} from "../../App";
+import {checkAndRefreshToken, deleteTokens} from "./JwtAxiosAuthenticationProps";
 
 const defaultTheme = createTheme();
 
 
 const SignIn = ({registrationComplete = false}) => {
-    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [regComplete, setRegComplete] = useState(registrationComplete)
     const {fetchUser} = useContext(AuthContext);
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            sendSignIn();
+        }
+    };
 
     const sendSignIn = async () => {
 
@@ -37,62 +43,48 @@ const SignIn = ({registrationComplete = false}) => {
             setError("Логин и пароль не должны быть пустыми");
             return;
         }
-        const data = {username, password};
-        let done = false
-        await axios.post(LOGIN_PROCESSING_URL, qs.stringify(data), SIGN_IN_CONFIG)
+        const basicAuthToken = btoa(`${username}:${password}`);
+        const config = {
+            headers: {
+                'Authorization': `Basic ${basicAuthToken}`,
+                'Content-Type': 'application/json',
+                // Другие заголовки, если необходимо
+            },
+        };
+
+        axios.post(LOGIN_PROCESSING_URL, "", config)
             .then(async response => {
-                if (!response.request.responseURL.includes("error")) {
-                    setError("");
-                    setUsername("");
-                    setPassword("")
-                    console.log("1111111111111111111111111111111111111111111111111111111111111111")
-                    // done = true
-                    await fetchUser()
-                    navigate("/")
-                } else {
-                    setRegComplete(false)
-                    setError("Логин или пароль некорректны");
-                }
+                console.log("-------------УДАЧНО-----------------")
+                setError("");
+                setUsername("");
+                setPassword("")
+                await deleteTokens()
+                await checkAndRefreshToken();
+                await fetchUser()
             })
-            .catch((error) => {
-                console.log(error);
-                setError("Что-то пошло не так")
+            .catch((err) => {
+                if (err.response) {
+                    if (err.response.status === 401) {
+                        console.log("-------------НЕЕЕЕУДАЧНО-----------------")
+                        setRegComplete(false)
+                        setError("Логин или пароль некорректны");
+                    } else {
+                        setError(`Что-то пошло не так: ошибка ${err.status}`);
+                        console.log("-------------НЕЕЕЕУДАЧНО2-----------------")
+                        console.log(err.response.data);
+                        console.log(err.response.status);
+                        console.log(err.response.headers);
+                    }
+                } else if (err.request) {
+                    console.log((err.response.data))
+                    setError("Сервер недоступен (возможно отключен доступ в сеть)" + err.response.data)
+                } else {
+                    console.log(err)
+                    setError("Что-то пошло не так" + err.response)
+                }
             });
     }
 
-    // const sendSignIn = async () => {
-    //     if (username === "" || password === "") {
-    //         setError("Логин и пароль не должны быть пустыми");
-    //         return;
-    //     }
-    //     // const data = {username: userName, password};
-    //     let done = false
-    //     let config = {
-    //         headers: {
-    //             Authorization: `Basic ${btoa(username + ":" + password)}`
-    //         }
-    //     }
-    //
-    //         axios.post(LOGIN_PROCESSING_URL, {}, config).then(res => console.log(res))
-        // await axios.post(LOGIN_PROCESSING_URL, qs.stringify(data), SIGN_IN_CONFIG)
-        //     .then(async response => {
-        //         if (!response.request.responseURL.includes("error")) {
-        //             setError("");
-        //             setUserName("");
-        //             setPassword("")
-        //             // done = true
-        //             await fetchUser()
-        //             navigate("/")
-        //         } else {
-        //             setRegComplete(false)
-        //             setError("Логин или пароль некорректны");
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //         setError("Что-то пошло не так")
-        //     });
-    // }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -122,26 +114,29 @@ const SignIn = ({registrationComplete = false}) => {
                         autoFocus
                         onChange={event => setUsername(event.target.value)}
                         value={username}
+                        onKeyDown={(event)=>handleKeyDown(event)}
                     />
 
                     {/*Форма пароля*/}
                     <PasswordForm
                         password={password}
-                        setPassword={setPassword}/>
+                        setPassword={setPassword}
+                        onKeyDown={(event)=>handleKeyDown(event)}/>
 
                     <Button
                         fullWidth
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                         onClick={() => sendSignIn()}
+
                     >
                         Войти
                     </Button>
 
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                     {regComplete &&
-                    <Alert severity="success" fullWidth>Регистрация завершена, войдите под своим логином и
-                        паролем</Alert>}
+                        <Alert severity="success">Регистрация завершена, войдите под своим логином и
+                            паролем</Alert>}
 
                     <Link to="/auth/registration" variant="subtitle2" component={RouterLink}>
                         {"Зарегистрироваться"}

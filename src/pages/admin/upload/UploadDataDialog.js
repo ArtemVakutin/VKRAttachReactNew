@@ -83,8 +83,11 @@ const UploadDataDialog = (props) => {
                 setTableData([])
                 setErrorTableData([])
                 setDataId("")
-                setError("Файл не загружен")
-
+                if (ex.response.data.message) {
+                    setError(ex.response.data.message)
+                } else {
+                    setError("Файл не загружен")
+                }
             } else if (ex.request) {
                 console.log("SERVER IS NOT AVAILABLE");
                 setTableData([])
@@ -142,17 +145,17 @@ const UploadDataDialog = (props) => {
 
 
                 {tableData.length === 0 && errorTableData.length > 0 &&
-                <Alert severity="error" fullwidth>"Никаких данных загружено не будет:"</Alert>}
+                <Alert severity="error">"Никаких данных загружено не будет:"</Alert>}
 
-                {error && <Alert severity="error" fullwidth>{error}</Alert>}
-                {!error && success && <Alert severity="success" fullwidth>{"Данные добавлены"}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
+                {!error && success && <Alert severity="success">{"Данные добавлены"}</Alert>}
 
                 {!error && errorTableData.length > 0 && tableData.length > 0 &&
-                <Alert severity="warning" fullwidth>{"Не будут загружены следующие данные:"}</Alert>}
+                <Alert severity="warning">{"Не будут загружены следующие данные:"}</Alert>}
                 {errorTableData.length > 0 && <BasicTable tableData={errorTableData}/>}
 
                 {!error && tableData.length > 0 &&
-                <Alert severity="info" fullwidth>{"Будут загружены следующие данные"}</Alert>}
+                <Alert severity="info">{"Будут загружены следующие данные"}</Alert>}
                 {tableData.length > 0 && <BasicTable tableData={tableData}/>}
 
             </DialogContent>

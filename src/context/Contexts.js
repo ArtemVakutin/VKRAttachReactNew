@@ -15,3 +15,4 @@ export const DomainContext = createContext({
     user: null,
     globalError: null,
     })
+

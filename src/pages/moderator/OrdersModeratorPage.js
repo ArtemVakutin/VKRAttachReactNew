@@ -1,12 +1,12 @@
 import React, {useContext} from "react";
 import {AuthContext} from "../../context/Contexts";
-import OrdersModeratorPageSelectors from "./OrdersModeratorPageSelectors";
+import OrdersPageSelectors from "../admin/OrdersPageSelectors";
 
 export const OrdersModeratorPage = () => {
 
     const {user} = useContext(AuthContext)
 
-    return <OrdersModeratorPageSelectors departmentInit={user.department} role={"MODERATOR"}/>
+    return <OrdersPageSelectors departmentInit={user.department} role={"MODERATOR"}/>
 }
 
 export default OrdersModeratorPage;

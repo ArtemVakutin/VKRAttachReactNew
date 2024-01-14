@@ -96,7 +96,7 @@ export const UsersPage = () => {
                         label="Год набора"/>
                 </Box>
             </Container>
-            <UsersDataGrid initialRows={users}/>
+            <UsersDataGrid initialRows={users} role={role}/>
         </>
     )
 

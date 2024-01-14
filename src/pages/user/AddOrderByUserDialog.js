@@ -162,7 +162,7 @@ function AddOrderByUserDialog({onClose, open, setRows}) {
                         onChange={event => setComment(event.target.value)}
                     />
 
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                 </Box>
 
             </DialogContent>

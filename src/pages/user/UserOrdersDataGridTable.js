@@ -18,7 +18,7 @@ import {ORDER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";
-import OrdersStyledDataGrid from "../admin/OrdersStyledDataGrid";
+import OrdersStyledDataGrid from "../admin/vrem/OrdersStyledDataGrid";
 import AddOrderByUserDialog from "./AddOrderByUserDialog";
 
 //Верхняя панелька
@@ -29,8 +29,8 @@ function EditToolbar({openAddOrderDialog}) {
             <GridToolbarColumnsButton/>
             <GridToolbarFilterButton/>
             <GridToolbarDensitySelector/>
-            <Button color="primary" startIcon={<AddIcon/>} onClick={openAddOrderDialog}>
-                Добавить заявку
+            <Button color="primary" variant="contained" startIcon={<AddIcon/>} onClick={openAddOrderDialog}>
+                <b>Добавить заявку</b>
             </Button>
         </GridToolbarContainer>
     );
@@ -191,7 +191,7 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
 
                     }}
                 />
-                {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
             </Box>
             <DeleteDialog open={deleteDialog} onClose={openDeleteDialog} rowForDelete={rowDel}
                           handleAccept={handleAcceptDeleteClick}/>

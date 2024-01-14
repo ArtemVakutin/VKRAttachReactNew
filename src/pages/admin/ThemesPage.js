@@ -8,7 +8,7 @@ import ThemesDataGrid from "./ThemesDataGrid";
 import SimpleSelector from "../components/SimpleSelector";
 
 
-export const ThemesPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
+export const ThemesPage = ({departmentInit, role = "ADMIN"}) => {
     const {faculties, years, departments} = useRouteLoaderData("layout");
 
     const [faculty, setFaculty] = useState("");
@@ -19,11 +19,12 @@ export const ThemesPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        setDepartment(departmentInitial); // This is be executed when `loading` state changes
+        setDepartment(departmentInit);
     }, [])
 
     useEffect(() => {
-        fetchThemes(setThemes, setError, {department, faculty, year}); // This is be executed when `loading` state changes
+        const notBusy = false;
+        fetchThemes(setThemes, setError, {department, faculty, year, notBusy}); // This is be executed when `loading` state changes
     }, [faculty, year, department])
 
     return (
@@ -57,10 +58,12 @@ export const ThemesPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
                         onChange={event=>setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                 </Box>
             </Container>
-            <ThemesDataGrid initialRows={themes}/>
+            {department && faculty && year && <ThemesDataGrid initialRows={themes} facultyInit={faculty} yearInit={year} departmentInit={department}/>}
+            {!faculty && !year && <Alert severity="info">Выберите все данные для показа имеющихся тем или добавления новых</Alert>}
+
         </>
     )
 

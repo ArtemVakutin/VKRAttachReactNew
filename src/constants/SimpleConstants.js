@@ -19,23 +19,23 @@ export const REQUEST_STATUS = [
 export const ROLES = [
     {
         value: "USER",
-        label: "Пользователь"
+        label: "USER"
     },
     {
         value: "MODERATOR",
-        label: "Начальник кафедры"
+        label: "MODERATOR"
     },
     {
         value: "ADMIN",
-        label: "Администратор"
+        label: "ADMIN"
     },
 
 ]
 
 const role = new Map();
-role.set("USER", "пользователь");
-role.set("MODERATOR", "начальник кафедры");
-role.set("ADMIN", "администратор");
+role.set("USER", "USER");
+role.set("MODERATOR", "MODERATOR");
+role.set("ADMIN", "ADMIN");
 
 export const SIGN_IN_CONFIG = {
     withCredentials: true,

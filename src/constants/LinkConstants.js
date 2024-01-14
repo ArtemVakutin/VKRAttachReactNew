@@ -8,6 +8,7 @@ export const GET_USERS_URL = process.env.REACT_APP_GET_USERS_URL;
 export const LOGIN_PROCESSING_URL = process.env.REACT_APP_LOGIN_PROCESSING_URL;
 export const LOGIN_REGISTRATION_URL = process.env.REACT_APP_LOGIN_REGISTRATION_URL;
 export const LOGOUT_URL = process.env.REACT_APP_LOGOUT_URL;
+export const TOKEN_PROCESSING_URL = process.env.REACT_APP_TOKEN_PROCESSING_URL;
 
 export const GET_THEMES_URL = process.env.REACT_APP_THEMES_URL;
 export const GET_THEMES_BY_SPECS = process.env.REACT_APP_THEMES_BY_SPECS_URL;

@@ -117,7 +117,7 @@ export const Registration = () => {
 
                 {/*логин*/}
                 <TextField margin="dense" fullWidth autoFocus
-                           label="Логин*"
+                           label="*Логин"
                            onChange={event => setLogin(event.target.value)}
                            value={login}/>
 
@@ -129,18 +129,19 @@ export const Registration = () => {
                 {/*Форма пароля*/}
                 <PasswordForm
                     password={passwordConfirm}
-                    setPassword={setPasswordConfirm}/>
+                    setPassword={setPasswordConfirm}
+                label={"Повторите пароль"}/>
 
                 {/*фамилия*/}
                 <TextField margin="dense" fullWidth
-                           label="Фамилия"
+                           label="*Фамилия"
                            onChange={event => setSurname(event.target.value)}
                            value={surname}
                 />
 
                 {/*имя*/}
                 <TextField margin="dense" fullWidth
-                           label="Имя"
+                           label="*Имя"
                            onChange={event => setName(event.target.value)}
                            value={name}
                 />
@@ -168,7 +169,7 @@ export const Registration = () => {
 
                 {/*Номер группы*/}
                 <TextField margin="dense" fullWidth
-                           label="Номер группы (без аббревиатуры, например просто: 213)."
+                           label="*Номер группы (без аббревиатуры, например просто: 213)."
                            onChange={event => setGroup(event.target.value)}
                            value={group}
                 />
@@ -178,14 +179,14 @@ export const Registration = () => {
                     value={faculty}
                     onChange={event => setFaculty(event.target.value)}
                     items={faculties}
-                    label="Специальность"/>
+                    label="*Специальность"/>
 
                 {/*год набора*/}
                 <SimpleSelector
                     value={year}
                     onChange={event => setYear(event.target.value)}
                     items={years}
-                    label="Год набора"/>
+                    label="*Год набора"/>
 
                 <SimpleSelector
                     value={rank}
@@ -214,12 +215,11 @@ export const Registration = () => {
                     Зарегистрироваться
                 </Button>
 
-                {error && <Alert severity="error" fullWidth>{error}</Alert>}
-
-                <Link to="/auth" variant="subtitle2" component={RouterLink}>
+                {error && <Alert severity="error">{error}</Alert>}
+                                <Link to="/auth" variant="subtitle2" component={RouterLink}>
                     {"Уже есть аккаунт? Войти"}
                 </Link>
-
+                <Alert severity="info">* - поля, обязательные для заполнения. Иные поля используются только при генерации документов и могут не заполняться.</Alert>
             </Box>
 
             <Typography variant="body2" color="text.secondary" align="center" sx={{mt: 8, mb: 4}}>

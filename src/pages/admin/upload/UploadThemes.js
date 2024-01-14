@@ -32,6 +32,18 @@ const UploadThemes = ({departmentInitial = "", role = "ADMIN"}) => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false)
 
+    useEffect(() => {
+        setDepartment(departmentInitial); // This is be executed when `loading` state changes
+    }, [])
+
+    useEffect(() => {
+        setParams({
+            department,
+            faculty,
+            year
+        }); // This is be executed when `loading` state changes
+    }, [faculty, year, department])
+
     const checkSelectors = () => {
         if (!faculty || !department || !year) {
             setError("Выберите все позиции")
@@ -104,17 +116,7 @@ const UploadThemes = ({departmentInitial = "", role = "ADMIN"}) => {
     }
 
 
-    useEffect(() => {
-        setDepartment(departmentInitial); // This is be executed when `loading` state changes
-    }, [])
 
-    useEffect(() => {
-        setParams({
-            department,
-            faculty,
-            yearOfRecruitment: year
-        }); // This is be executed when `loading` state changes
-    }, [faculty, year, department])
 
     return (
         <>
@@ -158,8 +160,8 @@ const UploadThemes = ({departmentInitial = "", role = "ADMIN"}) => {
                         <AddIcon/>Удалить все темы по факультету и году набора
                     </Button>
 
-                    {error && <Alert severity="error" fullwidth>{error}</Alert>}
-                    {success && <Alert severity="success" fullwidth>{success}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
+                    {success && <Alert severity="success">{success}</Alert>}
                     <UploadDataDialog params={params} onClose={openUploadDialog} open={uploadDialog}
                                       uploadType="themes" acceptedFiles={['.docx']}
                                       dropzoneText={"Выберите файл в формате .docx (НЕ .doc)"}/>

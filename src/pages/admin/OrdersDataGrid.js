@@ -1,8 +1,14 @@
 import React from 'react';
-import OrdersDataGridTable from "./OrdersDataGridTable";
 import {REQUEST_STATUS} from "../../constants/SimpleConstants";
+import OrdersDataGridTable from "./OrdersDataGridTable";
 
 export const OrdersDataGrid = (props) => {
+
+    const {lecturers} = props
+
+    const empty = [{value: "", label: "Отсутствует"}];
+    const  lecturersList = [...empty, ...lecturers]
+
 
     const columns = [
         {
@@ -13,7 +19,7 @@ export const OrdersDataGrid = (props) => {
             headerAlign: 'left',
             type: "singleSelect",
             valueOptions: REQUEST_STATUS,
-            editable: false,
+            editable: true,
         },
         {
             field: 'id',
@@ -31,6 +37,7 @@ export const OrdersDataGrid = (props) => {
             field: 'userName',
             headerName: 'ФИО обучающегося',
             flex: 200,
+            minWidth: 200,
             align: 'left',
             headerAlign: 'left',
             editable: false,
@@ -39,39 +46,37 @@ export const OrdersDataGrid = (props) => {
             field: 'group',
             headerName: 'Номер группы',
             flex: 130,
+            minWidth: 130,
             align: 'left',
             headerAlign: 'left',
             editable: false,
         },
         {
             field: 'themeId',
-            headerName: 'themeId',
+            headerName: 'ID темы',
             width: 60,
+            align: 'left',
+            headerAlign: 'left',
             editable: false
         },
         {
             field: 'themeName',
-            headerName: 'Название темы',
-            flex: 200,
+            headerName: 'Тема',
+            flex: 250,
+            minWidth: 250,
             align: 'left',
             headerAlign: 'left',
-            editable: false,
-        },
-        {
-            field: 'lecturerId',
-            headerName: 'lecturerId',
-            width: 60,
             editable: false
         },
         {
-            field: 'lecturerName',
-            headerName: 'ФИО преподавателя',
+            field: 'lecturerId',
+            headerName: 'Научный руководитель',
             flex: 200,
-            align: 'left',
-            headerAlign: 'left',
-            editable: false,
+            minWidth: 200,
+            type: "singleSelect",
+            valueOptions: lecturersList,
+            editable: true
         },
-
         {
             field: 'department',
             headerName: 'Кафедра',
@@ -83,12 +88,14 @@ export const OrdersDataGrid = (props) => {
         {
             field: 'comment',
             headerName: 'Комментарий',
-            flex: 250,
+            flex: 130,
+            minWidth: 130,
             align: 'left',
             headerAlign: 'left',
-            editable: false,
+            editable: true,
         },
     ]
+
 
     return <OrdersDataGridTable dataGridColumns={columns} {...props}/>
 

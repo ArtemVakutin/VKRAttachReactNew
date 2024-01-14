@@ -21,20 +21,21 @@ export const UserOrdersDataGrid = (props) => {
             field: 'id',
             headerName: 'ID',
             hideable: false,
-            width: 60,
+            width: 50,
             editable: false
         },
         {
             field: 'userId',
             headerName: 'userId',
             hideable: false,
-            width: 60,
+            width: 50,
             editable: false
         },
         {
             field: 'userName',
             headerName: 'ФИО обучающегося',
-            flex: 200,
+            flex: 180,
+            minWidth: 180,
             align: 'left',
             headerAlign: 'left',
             editable: false,
@@ -43,6 +44,7 @@ export const UserOrdersDataGrid = (props) => {
             field: 'group',
             headerName: 'Номер группы',
             flex: 130,
+            minWidth: 140,
             align: 'left',
             headerAlign: 'left',
             editable: false,
@@ -51,7 +53,7 @@ export const UserOrdersDataGrid = (props) => {
             field: 'themeId',
             headerName: 'ID темы',
             hideable: false,
-            width: 60,
+            width: 50,
             align: 'left',
             headerAlign: 'left',
             editable: false
@@ -59,19 +61,20 @@ export const UserOrdersDataGrid = (props) => {
         {
             field: 'themeName',
             headerName: 'Тема',
-            width: 250,
+            flex: 300,
+            minWidth: 300,
             align: 'left',
             headerAlign: 'left',
             editable: false
         },
         {
-            field: 'lecturerId',
-            hideable: false,
+            field: 'lecturerName',
             headerName: 'Научный руководитель',
-            width: 250,
-            type: "singleSelect",
-            valueOptions: lecturers,
-            editable: true
+            flex: 150,
+            minWidth: 150,
+            align: 'left',
+            headerAlign: 'left',
+            editable: false
         },
         {
             field: 'department',
@@ -84,7 +87,8 @@ export const UserOrdersDataGrid = (props) => {
         {
             field: 'comment',
             headerName: 'Комментарий',
-            flex: 250,
+            flex: 150,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             editable: true,

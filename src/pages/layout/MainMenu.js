@@ -19,6 +19,8 @@ export const MainMenu = () => {
     const {user, logout} = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [panelOpen, setPanelOpen] = React.useState(false);
+    const hello = user === null ? `Добрый день, гость` : `Добрый день, ${user.role === "USER" ? user.name : user.login}`;
+
 
     const closePanel = () => {
         setPanelOpen(false)
@@ -48,7 +50,7 @@ export const MainMenu = () => {
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            {user === null ? `Добрый день, гость` : `Добрый день, ${user.login}`}
+                            {hello}
                         </Typography>
                         {user && (
                             <div>
@@ -82,10 +84,10 @@ export const MainMenu = () => {
                                         navigate("/user/patch")
                                     }}>Изменить данные профиля</MenuItem>}
                                     <Divider/>
-                                    <MenuItem onClick={() => {
-                                        handleClose();
+                                    <MenuItem onClick={async () => {
+                                        await handleClose();
+                                        await logout()
                                         navigate("/auth")
-                                        logout()
                                     }}>Выйти из профиля</MenuItem>
                                 </Menu>
                             </div>

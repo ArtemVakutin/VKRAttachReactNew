@@ -28,7 +28,7 @@ function ErrorDialog(props) {
             <DialogTitle>Ошибка</DialogTitle>
 
             <DialogContent dividers>
-                <Alert severity="error" fullWidth>{error}</Alert>
+                <Alert severity="error">{error}</Alert>
             </DialogContent>
 
         </Dialog>

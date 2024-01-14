@@ -72,12 +72,12 @@ export const DownloadOrdersPage = ({departmentInitial = ""}) => {
                     borderRadius: 2,
                     p: 2
                 }}>
-                    <SimpleSelector
+                    {!departmentInitial && <SimpleSelector
                         hasEmpty={true}
                         value={department}
                         onChange={event => setDepartment(event.target.value)}
                         items={departments}
-                        label="Кафедра"/>
+                        label="Кафедра"/>}
                     <SimpleSelector
                         hasEmpty={true}
                         value={faculty}
@@ -90,7 +90,7 @@ export const DownloadOrdersPage = ({departmentInitial = ""}) => {
                         onChange={event => setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                     <Button size="large" variant="contained" onClick={downloadOrdersDocx}>
                         <AddIcon/>Скачать список закрепленных работ в .docx
                     </Button>

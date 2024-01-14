@@ -21,7 +21,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'surname',
             headerName: 'Фамилия',
-            flex: 200,
+            flex: 170,
+            minWidth: 170,
             align: 'left',
             headerAlign: 'left',
             editable: true,
@@ -29,7 +30,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'name',
             headerName: 'Имя',
-            flex: 200,
+            flex: 150,
+            minWidth: 150,
             align: 'left',
             headerAlign: 'left',
             editable: true,
@@ -37,7 +39,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'patronymic',
             headerName: 'Отчество',
-            flex: 200,
+            flex: 150,
+            minWidth: 150,
             align: 'left',
             headerAlign: 'left',
             editable: true,
@@ -45,7 +48,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'email',
             headerName: 'Электронная почта',
-            flex: 200,
+            flex: 170,
+            minWidth: 170,
             align: 'left',
             headerAlign: 'left',
             editable: true,
@@ -53,7 +57,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'telephone',
             headerName: 'Телефон',
-            flex: 200,
+            flex: 170,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             editable: true,
@@ -62,6 +67,7 @@ export const LecturersDataGrid = (props) => {
             field: 'department',
             headerName: 'Кафедра',
             flex: 150,
+            minWidth: 150,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -71,7 +77,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'academicDegree',
             headerName: 'Ученая степень',
-            flex: 150,
+            flex: 100,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -81,7 +88,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'academicTitle',
             headerName: 'Ученое звание',
-            flex: 150,
+            flex: 100,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -91,7 +99,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'rank',
             headerName: 'Специальное звание',
-            flex: 150,
+            flex: 100,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -101,7 +110,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'rankType',
             headerName: 'Вид звания',
-            flex: 150,
+            flex: 80,
+            minWidth: 80,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -111,7 +121,8 @@ export const LecturersDataGrid = (props) => {
         {
             field: 'position',
             headerName: 'Должность',
-            flex: 150,
+            flex: 100,
+            minWidth: 100,
             align: 'left',
             headerAlign: 'left',
             type: "singleSelect",
@@ -133,7 +144,7 @@ export const LecturersDataGrid = (props) => {
             academicDegree: '',
             academicTitle: '',
             rank: '',
-            rankType: '',
+            rankType: 'полиции',
             position: '',
             isNew: true
         }

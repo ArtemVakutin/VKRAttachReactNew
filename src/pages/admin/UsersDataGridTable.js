@@ -153,7 +153,8 @@ export default function UsersDataGridTable({dataGridColumns, getNewRow, initialR
             data: newObj
         }).then((resp) => {
             success = true
-            newObj = newRow.isNew ? {...newObj, id: resp.data.id, isNew: false} : newObj;
+            newObj = resp.data
+            // newObj = newRow.isNew ? {...newObj, id: resp.data.id, isNew: false} : newObj;
             // newObj = newRow.isNew ? {...newObj,isNew: false} : newObj;
         })
             .catch(err => {
@@ -164,14 +165,12 @@ export default function UsersDataGridTable({dataGridColumns, getNewRow, initialR
                     setError(err.response.data.message)
                 } else if (err.request) {
                     console.log((err.response.data))
-                    setError("сервер недоступен" + err.response.data)
+                    setError("Сервер недоступен" + err.response.data)
                 } else {
                     console.log(err)
                     setError("Что-то пошло не так" + err.response)
                 }
             });
-        console.log(success)
-        console.log(newObj)
         if (success) {
             // const updatedRow = {...newRow, isNew: false};
             setError("")
@@ -289,7 +288,7 @@ export default function UsersDataGridTable({dataGridColumns, getNewRow, initialR
 
                     }}
                 />
-                {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
             </Box>
             <DeleteDialog open={deleteDialog} onClose={openDeleteDialog} rowForDelete={rowDel}
                           handleAccept={handleAcceptDeleteClick}/>

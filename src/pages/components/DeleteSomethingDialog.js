@@ -29,7 +29,7 @@ function DeleteSomethingDialog(props) {
             <DialogTitle>Подтвердите удаление</DialogTitle>
 
             <DialogContent dividers>
-                <Alert severity="warning" fullWidth> Вы действительно хотите удалить {message} </Alert>
+                <Alert severity="warning"> Вы действительно хотите удалить {message} </Alert>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Не удалять</Button>

@@ -3,7 +3,8 @@ import React from "react";
 import {DOMAIN_URL, GET_ORDERS_FOR_USER} from "../constants/LinkConstants";
 
 export const domainDataLoader = async () => {
-    const {data} = await axios.get(`${DOMAIN_URL}`);
+    let data;
+    await axios.get(`${DOMAIN_URL}`).then(resp=>data = resp.data).catch(err => console.log(err.data))
     const domainData = {
         departments: data.DEPARTMENT,
         faculties: data.FACULTY,
@@ -15,8 +16,6 @@ export const domainDataLoader = async () => {
         rankTypes: data.RANK_TYPE,
         lecturerPositions: data.LECTURER_POSITION,
         userPositions: data.USER_POSITION,
-        user: null,
-        globalError: null,
     }
     console.log("DOMAIN DATA IS")
     console.log(domainData)

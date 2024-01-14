@@ -8,7 +8,7 @@ import {fetchLecturers} from "../../constants/Methods";
 import SimpleSelector from "../components/SimpleSelector";
 
 
-const LecturersPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
+const LecturersPage = ({departmentInitial = "", role = "ADMIN"}) => {
     const {departments} = useRouteLoaderData("layout");
     const [department, setDepartment] = useState();
 
@@ -21,7 +21,9 @@ const LecturersPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
     }, [])
 
     useEffect(() => {
-        fetchLecturers(setLecturers, setError, department); // This is be executed when `loading` state changes
+        if (department) {
+            fetchLecturers(setLecturers, setError, department); // This is be executed when `loading` state changes
+        }
     }, [department])
 
 
@@ -44,7 +46,7 @@ const LecturersPage = ({departmentInitial = "UPV", role = "ADMIN"}) => {
                         onChange={event => setDepartment(event.target.value)}
                         items={departments}
                         label="Кафедра"/>}
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                 </Box>
             </Container>
             <LecturersDataGrid initialRows={lecturers}/>

@@ -8,10 +8,9 @@ import * as React from "react";
 import {useState} from "react";
 
 
-const PasswordForm = ({setPassword = Function.prototype,
-                      password = "",
-                      label = "Пароль"}) => {
+const PasswordForm = (props) => {
 
+    const {setPassword = Function.prototype, password = "", label = "Пароль"} = props;
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -39,6 +38,7 @@ const PasswordForm = ({setPassword = Function.prototype,
                 label="Password"
                 onChange={event => setPassword(event.target.value)}
                 value={password}
+                {...props}
             />
         </FormControl>)
 

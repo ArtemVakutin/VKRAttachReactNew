@@ -1,6 +1,6 @@
 import axios from "axios";
 import {GET_LECTURERS_URL, GET_ORDERS_URL, GET_THEMES_URL, GET_USER_URL, GET_USERS_URL} from "./LinkConstants";
-import {sfAnd, sfEqual} from "spring-filter-query-builder";
+import {sfEqual} from "spring-filter-query-builder";
 
 
 export const fetchSimpleUserById = (setUser, setError, id) => {
@@ -66,12 +66,13 @@ export const fetchSimpleUsers = (setUsers, setError=()=>{}, {role = "USER", facu
     })
 }
 
-export const fetchThemes = (setThemes, setError=()=>{}, {department, faculty, year}) => {
+export const fetchThemes = (setThemes, setError=()=>{}, {department, faculty, year, notBusy = true}) => {
     const config = {
         params: {
             department,
             faculty,
-            year
+            year,
+            notBusy
         }
     }
 
@@ -97,11 +98,13 @@ export const fetchThemes = (setThemes, setError=()=>{}, {department, faculty, ye
     })
 }
 
-export const fetchLecturers = (setLecturers, setError = Function.prototype, department) => {
+export const fetchLecturers = (setLecturers, setError = Function.prototype, department, faculty, year) => {
 
     const config = {
         params: {
             department,
+            faculty,
+            year
         }
     }
     axios.get(GET_LECTURERS_URL, config).then(response => {
@@ -157,14 +160,15 @@ export const fetchOrdersByUser = (setOrders, setError, userId) => {
     })
 }
 
-export const fetchOrders = (setOrders, setError, {department = null, faculty = null, year = null, status = null, themeId = null}) => {
+export const fetchOrders = (setOrders, setError, {department = null, faculty = null, year = null, status = null, themeId = null, lecturerId = null}) => {
     let filter = null;
 
-    status && (filter = createFilters(filter, "orderStatus", status));
+    status && (filter = createFilters(filter, "requestStatus", status));
     faculty && (filter = createFilters(filter, "user.faculty", faculty));
     department && (filter = createFilters(filter, "theme.department", department));
     year && (filter = createFilters(filter, "user.year", year));
     themeId && (filter = createFilters(filter, "theme.themeId", themeId))
+    lecturerId && (filter = createFilters(filter, "lecturer.id", lecturerId))
 
     console.log(filter + "   в итоге фильтр")
 

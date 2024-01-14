@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {AuthContext} from "../context/Contexts";
 import {GET_USER_URL, LOGOUT_URL} from "../constants/LinkConstants";
 import axios from "axios";
+import {deleteTokens} from "../pages/authorization/JwtAxiosAuthenticationProps";
 
 
 export const AuthProvider = ({children}) => {
@@ -35,6 +36,7 @@ export const AuthProvider = ({children}) => {
         await axios.post(LOGOUT_URL).then(() => {
             setUser(null);
             setError(null)
+            deleteTokens()
         }).catch(error => {
             console.log(error)
         })
@@ -67,14 +69,7 @@ export const AuthProvider = ({children}) => {
     }, []);
 
 
-    // const signin = (newUser, cb) => {
-    //     setUser(newUser);
-    //     cb();
-    // }
-    // const signout = (cb) => {
-    //     setUser(null);
-    //     cb();
-    // }
+
 
     const value = {user, error, fetchUser, logout};
 

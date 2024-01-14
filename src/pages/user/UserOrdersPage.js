@@ -17,7 +17,7 @@ export const OrdersModeratorPage = () => {
     }, [user])
 
     return <>
-        {error && <Alert severity="error" fullWidth>{error}</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
         <UserOrdersDataGrid initialRows={orders}/>
     </>
 }

@@ -32,7 +32,7 @@ const UserPatchForm = () => {
     const [telephone, setTelephone] = useState(user.telephone);
     const [faculty, setFaculty] = useState(user.faculty);
     const [group, setGroup] = useState(user.group);
-    const [year, setYear] = useState(user.yearOfRecruitment);
+    const [year, setYear] = useState(user.year);
     const [rank, setRank] = useState(user.rank)
     const [rankType, setRankType] = useState(user.rankType)
     const [position, setPosition] = useState(user.position)
@@ -191,8 +191,8 @@ const UserPatchForm = () => {
                     Внести изменения
                 </Button>
 
-                {error && <Alert severity="error" fullWidth>{error}</Alert>}
-                {success && <Alert severity="success" fullWidth>Изменения внесены</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
+                {success && <Alert severity="success">Изменения внесены</Alert>}
 
             </Box>
 

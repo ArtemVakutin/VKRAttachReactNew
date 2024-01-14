@@ -29,7 +29,7 @@ function ChangeThemeDialog({onClose, open, setRows, row, rows}) {
     }, [row])
 
     useEffect(() => {
-        user && fetchThemes(setThemes, setError, {department, year: user.yearOfRecruitment, faculty: user.faculty})
+        user && fetchThemes(setThemes, setError, {department, year: user.year, faculty: user.faculty})
     }, [user])
 
     let themesMap = themes.map((theme) => {
@@ -110,11 +110,11 @@ function ChangeThemeDialog({onClose, open, setRows, row, rows}) {
                     {/*Выбор темы*/}
                     {(themes.length > 0) && <SimpleSelector
                         value={theme}
-                        setObject={setTheme}
+                        onChange={event => setTheme(event.target.value)}
                         items={themesMap}
                         label="Название темы"/>}
 
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                 </Box>
 
             </DialogContent>

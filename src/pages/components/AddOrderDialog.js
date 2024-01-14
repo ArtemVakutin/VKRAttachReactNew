@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import IconButton from "@mui/material/IconButton";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -15,8 +15,11 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import {ORDER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
+import {AuthContext} from "../../context/Contexts";
 
 function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
+
+    const {user: {role}} = useContext(AuthContext);
 
     const {faculties, years, departments} = useRouteLoaderData("layout")
     const [faculty, setFaculty] = useState("");
@@ -25,7 +28,7 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
     const [user, setUser] = useState("");
     const [theme, setTheme] = useState("")
     const [lecturer, setLecturer] = useState("")
-    const [requestStatus, setRequestStatus] = useState("UNDER_CONSIDERATION")
+    const [requestStatus, setRequestStatus] = useState("ACCEPTED")
     const [comment, setComment] = useState("")
 
     const [users, setUsers] = useState([]);
@@ -149,51 +152,49 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
                     {/*специальность*/}
                     <SimpleSelector
                         value={faculty}
-                        setObject={setFaculty}
+                        onChange={event => setFaculty(event.target.value)}
                         items={faculties}
-                        label="Специальность (направление подготовки)"/>
+                        label="Специальность"/>
 
                     {/*год набора*/}
                     <SimpleSelector
                         value={year}
-                        setObject={setYear}
+                        onChange={event => setYear(event.target.value)}
                         items={years}
                         label="Год набора"/>
 
                     {/*Выбор обучающегося*/}
                     {users.length > 0 && <SimpleSelector
                         value={user}
-                        setObject={setUser}
+                        onChange={event => setUser(event.target.value)}
                         items={usersMap}
                         label="Обучающийся"/>}
 
                     {/*Выбор кафедры на которой писать тему*/}
                     <SimpleSelector
                         value={department}
-                        setObject={setDepartment}
+                        onChange={event => setDepartment(event.target.value)}
                         items={departments}
-                        inputProps={{
-                            readOnly: departmentInit !== ""
-                        }}
+                        readOnly = {departmentInit !== "" && role !=="ADMIN"}
                         label="Кафедра"/>
 
                     {/*Выбор темы*/}
                     {(themes.length > 0) && <SimpleSelector
                         value={theme}
-                        setObject={setTheme}
+                        onChange={event => setTheme(event.target.value)}
                         items={themesMap}
                         label="Название темы"/>}
 
                     {/*Выбор научного руководителя*/}
                     {(lecturers.length > 0) && <SimpleSelector
                         value={lecturer}
-                        setObject={setLecturer}
+                        onChange={event => setLecturer(event.target.value)}
                         items={lecturers}
                         label="Научный руководитель"/>}
 
                     <SimpleSelector
                         value={requestStatus}
-                        setObject={setRequestStatus}
+                        onChange={event => setRequestStatus(event.target.value)}
                         items={REQUEST_STATUS}
                         label="Статус"/>
 
@@ -206,7 +207,7 @@ function AddOrderDialog({onClose, open, setRows, departmentInit=""}) {
                         value={comment}
                         onChange={event => setComment(event.target.value)}
                     />
-                    {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
                 </Box>
 
             </DialogContent>

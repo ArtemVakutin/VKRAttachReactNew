@@ -25,7 +25,7 @@ import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import EditOrderByThemeDialog from "../components/editdialogs/EditOrderByThemeDialog";
+import EditOrderDialog from "../components/editdialogs/EditOrderDialog";
 
 //Верхняя панелька
 function EditToolbar({getNewRow, setRows, setRowModesModel}) {
@@ -114,7 +114,7 @@ export default function ThemesDataGridTable({dataGridColumns, getNewRow, initial
         const [row] = rows.filter((row) => row.id === id)
         const data = {
             id: row.id, label: `${row.themeName} 
-        (${row.faculty} ${row.yearOfRecruitment}`
+        (${row.faculty} ${row.year}`
         }
         setRowDel(data)
         setDeleteDialog(() => !deleteDialog)
@@ -133,14 +133,16 @@ export default function ThemesDataGridTable({dataGridColumns, getNewRow, initial
                 console.log(err.response.data);
                 console.log(err.response.status);
                 console.log(err.response.headers);
-                setError("Невозможно удалить тему, скорее всего она уже находится в заявке пользователя." +
-                    " Откройте заявку (значек в последней колонке) и удалите тему из заявки")
+                setError(err.response.data.message)
+                openErrorDialog()
             } else if (err.request) {
                 console.log((err.response.data))
-                setError("сервер недоступен" + err.response.data)
+                setError("сервер недоступен")
+                openErrorDialog()
             } else {
                 console.log(err)
-                setError("Что-то пошло не так" + err.response)
+                setError("Что-то пошло не так")
+                openErrorDialog()
             }
         })
         setDeleteDialog(false)
@@ -272,7 +274,7 @@ export default function ThemesDataGridTable({dataGridColumns, getNewRow, initial
     const columns = [...rowIndexColumn, ...dataGridColumns, ...actionsColumn]
 
     return (
-        <Container>
+        <Container maxWidth="false">
             <Box mt={3}
                  sx={{
                      // minHeight: 500,
@@ -313,12 +315,12 @@ export default function ThemesDataGridTable({dataGridColumns, getNewRow, initial
 
                     }}
                 />
-                {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
             </Box>
             <DeleteDialog open={deleteDialog} onClose={openDeleteDialog} rowForDelete={rowDel}
                           handleAccept={handleAcceptDeleteClick}/>
             <ErrorDialog open={errorDialog} onClose={openErrorDialog} error={error}/>
-            <EditOrderByThemeDialog open={editOrderDialog} themeId={editOrderThemeId} onClose={()=>setEditOrderDialog(false)}/>
+            <EditOrderDialog open={editOrderDialog} themeId={editOrderThemeId} onClose={()=>setEditOrderDialog(false)}/>
         </Container>
     );
 }

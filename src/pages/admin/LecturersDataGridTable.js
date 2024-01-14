@@ -24,6 +24,8 @@ import {LECTURER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";
+import EditOrderDialog from "../components/editdialogs/EditOrderDialog";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
 //Верхняя панелька
 function EditToolbar({getNewRow, setRows, setRowModesModel}) {
@@ -54,12 +56,13 @@ function EditToolbar({getNewRow, setRows, setRowModesModel}) {
 
 //Вся таблица
 export default function LecturersDataGridTable({dataGridColumns, getNewRow, initialRows}) {
-
     const [rows, setRows] = React.useState([]);
     const [rowModesModel, setRowModesModel] = React.useState({});
     const [error, setError] = React.useState("");
     const [errorDialog, setErrorDialog] = React.useState(false);
     const [deleteDialog, setDeleteDialog] = React.useState(false);
+    const [editOrderDialog, setEditOrderDialog] = React.useState(false);
+    const [editOrderLecturerId, setEditOrderLecturerId] = React.useState(null);
     const [rowDel, setRowDel] = React.useState({});
     const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
         id: false,
@@ -76,6 +79,11 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
 
     const openDeleteDialog = () => {
         setDeleteDialog(() => !deleteDialog)
+    };
+
+    const handleEditOrderClick = (id) => () => {
+        id && setEditOrderLecturerId(id)
+        setEditOrderDialog(() => !editOrderDialog);
     };
 
     //Отменить режим редактирования
@@ -244,6 +252,12 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
                         onClick={handleDeleteClick(id)}
                         color="inherit"
                     />,
+                    <GridActionsCellItem
+                        icon={<AppRegistrationIcon/>}
+                        label="Редактировать заявки"
+                        onClick={handleEditOrderClick(id)}
+                        color="inherit"
+                    />,
                 ];
             },
         },
@@ -293,11 +307,12 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
 
                     }}
                 />
-                {error && <Alert severity="error" fullWidth>{error}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
             </Box>
             <DeleteDialog open={deleteDialog} onClose={openDeleteDialog} rowForDelete={rowDel}
                           handleAccept={handleAcceptDeleteClick}/>
             <ErrorDialog open={errorDialog} onClose={openErrorDialog} error={error}/>
+            <EditOrderDialog open={editOrderDialog} lecturerId={editOrderLecturerId} onClose={()=>setEditOrderDialog(false)}/>
         </Container>
     );
 }
