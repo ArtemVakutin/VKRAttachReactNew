@@ -6,7 +6,7 @@ export const LecturersModeratorPage = () => {
 
     const {user} = useContext(AuthContext)
 
-    return <LecturersPage departmentInit={user.department} role={"MODERATOR"}/>
+    return <LecturersPage departmentInitial={user.department} role={"MODERATOR"}/>
 }
 
 export default LecturersModeratorPage;

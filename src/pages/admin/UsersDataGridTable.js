@@ -247,7 +247,7 @@ export default function UsersDataGridTable({dataGridColumns, getNewRow, initialR
         },
     ];
 
-    const columns = [...rowIndexColumn, ...dataGridColumns, ...actionsColumn]
+    const columns = [...actionsColumn, ...rowIndexColumn, ...dataGridColumns]
 
     return (
         <Container maxWidth="false">

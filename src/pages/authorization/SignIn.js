@@ -52,7 +52,7 @@ const SignIn = ({registrationComplete = false}) => {
             },
         };
 
-        axios.post(LOGIN_PROCESSING_URL, "", config)
+        await axios.post(LOGIN_PROCESSING_URL, "", config)
             .then(async response => {
                 console.log("-------------УДАЧНО-----------------")
                 setError("");

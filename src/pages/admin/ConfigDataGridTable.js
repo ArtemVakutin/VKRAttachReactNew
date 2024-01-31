@@ -20,7 +20,7 @@ import {
 } from '@mui/x-data-grid';
 import Container from "@mui/material/Container";
 import axios from "axios";
-import {LECTURER_URL} from "../../constants/LinkConstants";
+import {CONFIG_URL, LECTURER_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";
@@ -37,7 +37,7 @@ function EditToolbar({getNewRow, setRows, setRowModesModel}) {
         setRows((oldRows) => [...oldRows, newRow]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
-            [newRow.id]: {mode: GridRowModes.Edit, fieldToFocus: 'themeName'},
+            [newRow.id]: {mode: GridRowModes.Edit, fieldToFocus: 'value'},
         }));
     };
 
@@ -48,21 +48,19 @@ function EditToolbar({getNewRow, setRows, setRowModesModel}) {
             <GridToolbarDensitySelector/>
             <GridToolbarExport/>
             <Button color="primary" startIcon={<AddIcon/>} onClick={handleClick}>
-                Добавить научного руководителя
+                Добавить настройку
             </Button>
         </GridToolbarContainer>
     );
 }
 
 //Вся таблица
-export default function LecturersDataGridTable({dataGridColumns, getNewRow, initialRows}) {
+export default function ConfigDataGridTable({dataGridColumns, getNewRow, initialRows}) {
     const [rows, setRows] = React.useState([]);
     const [rowModesModel, setRowModesModel] = React.useState({});
     const [error, setError] = React.useState("");
     const [errorDialog, setErrorDialog] = React.useState(false);
     const [deleteDialog, setDeleteDialog] = React.useState(false);
-    const [editOrderDialog, setEditOrderDialog] = React.useState(false);
-    const [editOrderLecturerId, setEditOrderLecturerId] = React.useState(null);
     const [rowDel, setRowDel] = React.useState({});
     const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
         id: false,
@@ -79,11 +77,6 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
 
     const openDeleteDialog = () => {
         setDeleteDialog(() => !deleteDialog)
-    };
-
-    const handleEditOrderClick = (id) => () => {
-        id && setEditOrderLecturerId(id)
-        setEditOrderDialog(() => !editOrderDialog);
     };
 
     //Отменить режим редактирования
@@ -108,8 +101,9 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
     const handleDeleteClick = (id) => async () => {
         const [row] = rows.filter((row) => row.id === id)
         const data = {
-            id: row.id, label: `${row.surname} ${row.name} 
-        ${row.patronymic}, ${row.department}`
+            id: row.id, label: `${row.type} ${row.value} 
+        ${row.label}
+        ОСТОРОЖНО! ЭТО МОЖЕТ ПОВЛЕЧЬ НЕВОЗМОЖНОСТЬ ДОСТУПА К УЖЕ ЗАКРЕПЛЕННЫМ ЗАЯВКАМ, ТЕМАМ И ПРЕПОДАВАТЕЛЯМ С ТАКИМИ ДАННЫМИ`
         }
         setRowDel(data)
         setDeleteDialog(() => !deleteDialog)
@@ -118,16 +112,17 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
     //Удаляет запись
     const handleAcceptDeleteClick = (id) => () => {
         const config = {params: {id}}
-        axios.delete(LECTURER_URL, config).then(
+        axios.delete(CONFIG_URL, config).then(
             () => {
                 setRows(rows.filter((row) => row.id !== id));
+                setDeleteDialog(false)
                 setError("")
             }).catch(err => {
             if (err.response) {
                 console.log(err.response.data);
                 console.log(err.response.status);
                 console.log(err.response.headers);
-                setError("Невозможно удалить научного руководителя")
+                setError("Невозможно удалить настройку")
             } else if (err.request) {
                 console.log((err.response.data))
                 setError("сервер недоступен" + err.response.data)
@@ -159,7 +154,7 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
         let newObj = newRow.isNew ? {...newRow, id: ""} : newRow;
         await axios.request({
             method: newRow.isNew ? "put" : "patch",
-            url: LECTURER_URL,
+            url: CONFIG_URL,
             data: newObj
         }).then((resp) => {
             success = true
@@ -250,13 +245,7 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
                         label="Delete"
                         onClick={handleDeleteClick(id)}
                         color="inherit"
-                    />,
-                    <GridActionsCellItem
-                        icon={<AppRegistrationIcon/>}
-                        label="Редактировать заявки"
-                        onClick={handleEditOrderClick(id)}
-                        color="inherit"
-                    />,
+                    />
                 ];
             },
         },
@@ -265,7 +254,7 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
     const columns = [...actionsColumn, ...rowIndexColumn, ...dataGridColumns]
 
     return (
-        <Container maxWidth="false">
+        <Container maxWidth="xl">
             <Box mt={3}
                  sx={{
                      // minHeight: 500,
@@ -311,7 +300,6 @@ export default function LecturersDataGridTable({dataGridColumns, getNewRow, init
             <DeleteDialog open={deleteDialog} onClose={openDeleteDialog} rowForDelete={rowDel}
                           handleAccept={handleAcceptDeleteClick}/>
             <ErrorDialog open={errorDialog} onClose={openErrorDialog} error={error}/>
-            <EditOrderDialog open={editOrderDialog} lecturerId={editOrderLecturerId} onClose={()=>setEditOrderDialog(false)}/>
         </Container>
     );
 }

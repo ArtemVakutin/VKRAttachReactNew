@@ -83,6 +83,10 @@ export const MainMenu = () => {
                                         handleClose();
                                         navigate("/user/patch")
                                     }}>Изменить данные профиля</MenuItem>}
+                                    {user && <MenuItem onClick={() => {
+                                        handleClose();
+                                        navigate(`/${user.role.toLowerCase()}/password`)
+                                    }}>Сменить пароль</MenuItem>}
                                     <Divider/>
                                     <MenuItem onClick={async () => {
                                         await handleClose();

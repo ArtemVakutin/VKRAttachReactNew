@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import axios from "axios";
 import {TOKEN_PROCESSING_URL} from "../../constants/LinkConstants";
+import {AuthContext} from "../../context/Contexts";
 
 axios.defaults.withCredentials = true;
 
@@ -104,6 +105,23 @@ axios.interceptors.request.use(
     // }
 );
 
+// axios.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         if (error.response && error.response.status === 403) {
+//             const path = window.location.pathname;
+//             console.error('-----------------------------');
+//             // Проверяем, не находится ли пользователь на странице аутентификации
+//             if (path !== '/auth') {
+//                 console.error('403 error:', error.response.data);
+//                 // Переходим на страницу аутентификации
+//                 window.location.href = '/auth';
+//             }
+//         }
+//
+//         return Promise.reject(error);
+//     }
+// );
 
 const JwtAxiosAuthenticationProps = ({children}) => {
 

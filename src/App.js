@@ -25,6 +25,9 @@ import JwtAxiosAuthenticationProps from "./pages/authorization/JwtAxiosAuthentic
 import UserDownloadPage from "./pages/user/UserDownloadPage";
 import Exception from "./pages/errors/Exception";
 import ModeratorDownloadPage from "./pages/moderator/ModeratorDownloadPage";
+import ConfigPage from "./pages/admin/ConfigPage";
+import {ChangePasswordForm} from "./pages/layout/ChangePasswordForm";
+import LogsPage from "./pages/admin/LogsPage";
 
 axios.defaults.withCredentials = true;
 
@@ -44,6 +47,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             <Route path="" element={<UserOrdersPage/>}/>
             <Route path="patch" element={<UserPatchForm/>}/>
             <Route path="docs" element={<UserDownloadPage/>}/>
+            <Route path="password" element={<ChangePasswordForm/>}/>
         </Route>
 
         <Route path="moderator" element={<PrivateRoute role="MODERATOR"/>}>
@@ -51,6 +55,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             <Route path="docs" element={<ModeratorDownloadPage/>}/>
             <Route path="lecturers" element={<LecturersModeratorPage/>}/>
             <Route path="themes" element={<ThemesModeratorPage/>}/>
+            <Route path="password" element={<ChangePasswordForm/>}/>
         </Route>
 
         <Route path="admin" element={<PrivateRoute role="ADMIN"/>}>
@@ -60,17 +65,23 @@ const router = createBrowserRouter(createRoutesFromElements(
             <Route path="lecturers" element={<LecturersPage/>}/>
             <Route path="addfiles" element={<UploadPage/>}/>
             <Route path="getfiles" element={<DownloadPage/>}/>
+            <Route path="config" element={<ConfigPage/>}/>
+            <Route path="logs" element={<LogsPage/>}/>
+            <Route path="password" element={<ChangePasswordForm/>}/>
         </Route>
 
     </Route>
 ))
 
 export const App = () => {
+    // deleteTokens();
 
     return (
         <JwtAxiosAuthenticationProps>
             <AuthProvider>
+
                 <RouterProvider router={router}/>
+
             </AuthProvider>
         </JwtAxiosAuthenticationProps>
     );

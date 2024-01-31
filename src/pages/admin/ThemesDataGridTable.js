@@ -271,7 +271,7 @@ export default function ThemesDataGridTable({dataGridColumns, getNewRow, initial
         },
     ];
 
-    const columns = [...rowIndexColumn, ...dataGridColumns, ...actionsColumn]
+    const columns = [...actionsColumn, ...rowIndexColumn, ...dataGridColumns]
 
     return (
         <Container maxWidth="false">

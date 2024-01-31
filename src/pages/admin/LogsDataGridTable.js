@@ -3,67 +3,59 @@ import {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import CheckIcon from '@mui/icons-material/Check';
 import {
+    DataGrid,
     GridActionsCellItem,
+    GridRowEditStopReasons,
+    GridRowModes,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
+    GridToolbarExport,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import Container from "@mui/material/Container";
 import axios from "axios";
-import {ORDER_URL} from "../../constants/LinkConstants";
+import {CONFIG_URL, DOWNLOAD_URL, LOGS_URL} from "../../constants/LinkConstants";
 import Alert from "@mui/material/Alert";
 import ErrorDialog from "../components/ErrorDialog";
 import DeleteDialog from "../components/DeleteDialog";
-import OrdersStyledDataGrid from "../admin/vrem/OrdersStyledDataGrid";
-import AddOrderByUserDialog from "./AddOrderByUserDialog";
+import DownloadIcon from '@mui/icons-material/Download';
+import fileDownload from "js-file-download";
 
 //Верхняя панелька
-function EditToolbar({openAddOrderDialog}) {
+function EditToolbar({getNewRow, setRows, setRowModesModel}) {
 
     return (
         <GridToolbarContainer>
             <GridToolbarColumnsButton/>
             <GridToolbarFilterButton/>
             <GridToolbarDensitySelector/>
-            <Button color="primary" variant="contained" startIcon={<AddIcon/>} onClick={openAddOrderDialog}>
-                <b>Добавить заявку</b>
-            </Button>
         </GridToolbarContainer>
     );
 }
 
 //Вся таблица
-export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) {
-
+export default function LogsDataGridTable({dataGridColumns, initialRows}) {
     const [rows, setRows] = React.useState([]);
     const [rowModesModel, setRowModesModel] = React.useState({});
     const [error, setError] = React.useState("");
     const [errorDialog, setErrorDialog] = React.useState(false);
     const [deleteDialog, setDeleteDialog] = React.useState(false);
-    const [addOrderDialog, setAddOrderDialog] = React.useState(false);
     const [rowDel, setRowDel] = React.useState({});
-
     const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
         id: false,
-        userId: false,
-        themeId: false,
-        lecturerId: false
     });
 
     useEffect(() => {
-        setRows(initialRows)
+        const setRowsToState = () => setRows(initialRows)
+        setRowsToState()
     }, [initialRows])
 
     const openErrorDialog = () => {
         setErrorDialog(() => !errorDialog)
-    };
-
-    const openAddOrderDialog = () => {
-        setAddOrderDialog(!addOrderDialog)
     };
 
     const openDeleteDialog = () => {
@@ -71,12 +63,11 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
     };
 
     //Удаляет запись
-    const handleDeleteClick = (id) => async () => {
-        const [row] = rows.filter((row) => row.id == id)
+    const handleDeleteClick = (id) => () => {
+        const [row] = rows.filter((row) => row.logName === id)
         const data = {
-            id: row.id, label: ` заявку:
-             ФИО обучающегося: ${row.userName},
-        № Группы: ${row.group}, кафедра: ${row.department}, название темы: ${row.themeName}`
+            id, label: `${row.logName} ${row.logTime}         
+        УДАЛЕНИЕ ПИШУЩЕГОСЯ ЛОГ-ФАЙЛА ВЫДАСТ ОШИБКУ`
         }
         setRowDel(data)
         setDeleteDialog(() => !deleteDialog)
@@ -84,10 +75,10 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
 
     //Удаляет запись
     const handleAcceptDeleteClick = (id) => () => {
-        const config = {params: {id}}
-        axios.delete(ORDER_URL, config).then(
+        const config = {params: {fileName: id}}
+        axios.delete(LOGS_URL, config).then(
             () => {
-                setRows(rows.filter((row) => row.id !== id));
+                setRows(rows.filter((row) => row.logName !== id));
                 setDeleteDialog(false)
                 setError("")
             }).catch(err => {
@@ -95,66 +86,91 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
                 console.log(err.response.data);
                 console.log(err.response.status);
                 console.log(err.response.headers);
-                setError("Невозможно удалить заявку")
+                setError("Невозможно удалить файл")
+                openErrorDialog()
             } else if (err.request) {
                 console.log((err.response.data))
                 setError("сервер недоступен" + err.response.data)
+                openErrorDialog()
             } else {
                 console.log(err)
                 setError("Что-то пошло не так" + err.response)
+                openErrorDialog()
             }
         })
         setDeleteDialog(false)
     }
 
+    const handleDownloadClick = (id) => () => {
+        const logName = rows.filter((row) => row.logName === id)[0].logName
+        const config = {
+            responseType: 'arraybuffer',
+            params: {
+                fileName: logName
+            }
+        }
+        axios.get(`${LOGS_URL}/get`, config).then(response => {
+            setError("")
+            const match = response.headers['content-disposition'].match(/filename=(.+)/);
+            const filename = match && match[1] ? match[1] : 'logs';
+            fileDownload(response.data, filename);
+        }).catch(ex => {
+            if (ex.response) {
+                console.log(ex.response.data);
+                console.log(ex.response.status);
+                console.log(ex.response.headers);
+                setError("Загрузка файла не удалась")
+                openErrorDialog()
 
-    const rowIndexColumn = [{
-        field: 'rowindex',
-        headerName: 'Номер',
-        type: 'number',
-        width: 60,
-        renderCell: (index) => index.api.getRowIndexRelativeToVisibleRows(index.row.id) + 1,
-        align: 'left',
-        headerAlign: 'left',
-        editable: false,
-        filterable: false
-    }]
+            } else if (ex.request) {
+                console.log("SERVER IS NOT AVAILABLE");
+                setError("Сервер не отвечает")
+                openErrorDialog()
+            } else {
+                setError("Что-то в этом мире пошло не так")
+                openErrorDialog()
+            }
+        })
+
+    }
+
+    //Срабатывает в конце изменения модельки
+    const handleRowModesModelChange = (newRowModesModel) => {
+        setRowModesModel(newRowModesModel);
+    };
 
     const actionsColumn = [
         {
             field: 'actions',
             type: 'actions',
-            headerName: 'Действия',
+            headerName: 'Actions',
             width: 100,
             cellClassName: 'actions',
-            getActions: ({row}) => {
-                if (row.requestStatus === "ACCEPTED") {
-                    return [<GridActionsCellItem
-                        icon={<CheckIcon/>}
-                        label="Registered"
-                        onClick={() => {
-                            setError("Заявка уже зарегистрирована. Удалить заявку может только представитель кафедры")
-                            openErrorDialog()
-                        }}
-                        color="inherit"
-                    />]
-                }
+            getActions: ({id}) => {
+
                 return [
                     <GridActionsCellItem
-                        icon={<DeleteIcon/>}
-                        label="Delete"
-                        onClick={handleDeleteClick(row.id)}
+                        icon={<DownloadIcon/>}
+                        label="Скачать"
+                        className="textPrimary"
+                        onClick={handleDownloadClick(id)}
                         color="inherit"
                     />,
+                    <GridActionsCellItem
+                        icon={<DeleteIcon/>}
+                        label="Удалить"
+                        onClick={handleDeleteClick(id)}
+                        color="inherit"
+                    />
                 ];
             },
         },
     ];
 
-    const columns = [...actionsColumn, ...rowIndexColumn, ...dataGridColumns]
+    const columns = [...actionsColumn, ...dataGridColumns]
 
     return (
-        <Container maxWidth="false">
+        <Container maxWidth="md">
             <Box mt={3}
                  sx={{
                      // minHeight: 500,
@@ -167,11 +183,13 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
                      },
                  }}
             >
-                <OrdersStyledDataGrid
+                <DataGrid
                     rows={rows}
                     columns={columns}
                     editMode="row"
+                    getRowId={(row) => row.logName}
                     rowModesModel={rowModesModel}
+                    onRowModesModelChange={handleRowModesModelChange}
                     columnVisibilityModel={columnVisibilityModel}
                     onColumnVisibilityModelChange={(newModel) =>
                         setColumnVisibilityModel(newModel)}
@@ -179,7 +197,7 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
                         toolbar: EditToolbar
                     }}
                     slotProps={{
-                        toolbar: {openAddOrderDialog},
+                        toolbar: {setRows, setRowModesModel},
                     }}
                     sx={{
                         '& .MuiDataGrid-columnHeader': {
@@ -188,15 +206,12 @@ export default function UserOrdersDataGridTable({dataGridColumns, initialRows}) 
                         '& .MuiDataGrid-columnHeaderTitle': {
                             fontWeight: 'bold'
                         },
-
                     }}
                 />
-                {error && <Alert severity="error">{error}</Alert>}
+                {/*{error && <Alert severity="error">{error}</Alert>}*/}
             </Box>
             <DeleteDialog open={deleteDialog} onClose={openDeleteDialog} rowForDelete={rowDel}
                           handleAccept={handleAcceptDeleteClick}/>
-            <AddOrderByUserDialog open={addOrderDialog} onClose={openAddOrderDialog} rows={rows} setRows={setRows}
-                                  handleAccept={Function.prototype}/>
             <ErrorDialog open={errorDialog} onClose={openErrorDialog} error={error}/>
         </Container>
     );

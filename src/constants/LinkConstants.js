@@ -1,8 +1,11 @@
 
 
 export const DOMAIN_URL =  process.env.REACT_APP_DOMAIN_URL;
+export const CONFIG_URL =  process.env.REACT_APP_CONFIG_URL;
+export const RESTART_URL =  process.env.REACT_APP_RESTART_URL;
 
 export const GET_USER_URL = process.env.REACT_APP_GET_USER_URL;
+export const CHANGE_PASSWORD_URL = process.env.REACT_APP_CHANGE_PASSWORD_URL;
 export const GET_USERS_URL = process.env.REACT_APP_GET_USERS_URL;
 
 export const LOGIN_PROCESSING_URL = process.env.REACT_APP_LOGIN_PROCESSING_URL;
@@ -24,6 +27,7 @@ export const GET_ORDERS_FOR_USER = process.env.REACT_APP_GET_ORDERS_FOR_USER;
 
 export const UPLOAD_URL = process.env.REACT_APP_UPLOAD_URL
 export const DOWNLOAD_URL = process.env.REACT_APP_DOWNLOAD_URL
+export const LOGS_URL = process.env.REACT_APP_LOGS_URL
 
 
 

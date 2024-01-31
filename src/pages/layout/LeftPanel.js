@@ -9,7 +9,7 @@ import {Link as RouterLink} from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import CloseIcon from '@mui/icons-material/Close';
-import {LINKS_BY_ROLE} from "../../constants/SimpleConstants";
+import {LINKS_BY_ROLE} from "../../constants/RouterPanelLinks";
 import {AuthContext} from "../../context/Contexts";
 
 

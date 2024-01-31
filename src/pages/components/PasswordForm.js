@@ -19,7 +19,7 @@ const PasswordForm = (props) => {
             margin="normal"
             required
             fullWidth
-            autoComplete="current-password"
+            // autoComplete="current-password"
         >
             <InputLabel>{label}</InputLabel>
             <OutlinedInput
@@ -35,7 +35,7 @@ const PasswordForm = (props) => {
                         </IconButton>
                     </InputAdornment>
                 }
-                label="Password"
+                // label="Пароль"
                 onChange={event => setPassword(event.target.value)}
                 value={password}
                 {...props}

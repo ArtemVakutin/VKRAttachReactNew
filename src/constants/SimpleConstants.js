@@ -32,6 +32,49 @@ export const ROLES = [
 
 ]
 
+export const CONFIG_TYPES = [
+    {
+        value: "DEPARTMENT",
+        label: "Кафедра"
+    },
+    {
+        value: "FACULTY",
+        label: "Специальность (направление подготовки)"
+    },
+    {
+        value: "YEAR",
+        label: "Год набора"
+    },
+    {
+        value: "RANK",
+        label: "Звание обучающегося"
+    },
+    {
+        value: "LECTURER_RANK",
+        label: "Звание преподавателя"
+    },
+    {
+        value: "RANK_TYPE",
+        label: "Вид звания"
+    },
+    {
+        value: "ACADEMIC_DEGREE",
+        label: "Ученая степень"
+    },
+    {
+        value: "ACADEMIC_TITLE",
+        label: "Ученое звание"
+    },
+    {
+        value: "LECTURER_POSITION",
+        label: "Должность преподавателя"
+    },
+    {
+        value: "USER_POSITION",
+        label: "Должность обучающегося"
+    },
+]
+
 const role = new Map();
 role.set("USER", "USER");
 role.set("MODERATOR", "MODERATOR");
@@ -42,75 +85,4 @@ export const SIGN_IN_CONFIG = {
     headers: {Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"}
 }
 
-export const LINKS_BY_ROLE = [
-    {
-        roleName: "NONE",
-        to: "/auth",
-        text: "Войти"
-    },
-    {
-        roleName: "NONE",
-        to: "/auth/registration",
-        text: "Зарегистрироваться"
-    },
-    {
-        roleName: "USER",
-        to: "/user",
-        text: "Заявки"
-    },
-    {
-        roleName: "USER",
-        to: "/user/docs",
-        text: "Документы"
-    },
-    {
-        roleName: "MODERATOR",
-        to: "/moderator",
-        text: "Заявки"
-    },
-    {
-        roleName: "MODERATOR",
-        to: "/moderator/docs",
-        text: "Документы"
-    },
-    {
-        roleName: "MODERATOR",
-        to: "/moderator/lecturers",
-        text: "Научные руководители"
-    },
-    {
-        roleName: "MODERATOR",
-        to: "/moderator/themes",
-        text: "Темы"
-    },
-    {
-        roleName: "ADMIN",
-        to: "/admin",
-        text: "Заявки"
-    },
-    {
-        roleName: "ADMIN",
-        to: "/admin/users",
-        text: "Пользователи"
-    },
-    {
-        roleName: "ADMIN",
-        to: "/admin/themes",
-        text: "Темы ВКР"
-    },
-    {
-        roleName: "ADMIN",
-        to: "/admin/lecturers",
-        text: "Преподаватели"
-    },
-    {
-        roleName: "ADMIN",
-        to: "/admin/addfiles",
-        text: "Добавить данные"
-    },
-    {
-        roleName: "ADMIN",
-        to: "/admin/getfiles",
-        text: "Получить документы"
-    }
-]
+
